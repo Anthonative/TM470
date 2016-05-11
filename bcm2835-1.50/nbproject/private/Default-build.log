@@ -1,0 +1,17 @@
+/usr/bin/make  all-recursive
+make[1]: Entering directory '/root/.netbeans/remote/raspberrypi/tony-notebook-Windows-x86_64/D/TM470/bcm2835-1.50'
+Making all in src
+make[2]: Entering directory '/root/.netbeans/remote/raspberrypi/tony-notebook-Windows-x86_64/D/TM470/bcm2835-1.50/src'
+/usr/bin/gcc -DHAVE_CONFIG_H -I. -I..     -g3 -gdwarf-2 -MT bcm2835.o -MD -MP -MF .deps/bcm2835.Tpo -c -o bcm2835.o bcm2835.c
+mv -f .deps/bcm2835.Tpo .deps/bcm2835.Po
+rm -f libbcm2835.a
+ar cru libbcm2835.a bcm2835.o 
+ranlib libbcm2835.a
+make[2]: Leaving directory '/root/.netbeans/remote/raspberrypi/tony-notebook-Windows-x86_64/D/TM470/bcm2835-1.50/src'
+Making all in doc
+make[2]: Entering directory '/root/.netbeans/remote/raspberrypi/tony-notebook-Windows-x86_64/D/TM470/bcm2835-1.50/doc'
+make[2]: Nothing to be done for 'all'.
+make[2]: Leaving directory '/root/.netbeans/remote/raspberrypi/tony-notebook-Windows-x86_64/D/TM470/bcm2835-1.50/doc'
+make[2]: Entering directory '/root/.netbeans/remote/raspberrypi/tony-notebook-Windows-x86_64/D/TM470/bcm2835-1.50'
+make[2]: Leaving directory '/root/.netbeans/remote/raspberrypi/tony-notebook-Windows-x86_64/D/TM470/bcm2835-1.50'
+make[1]: Leaving directory '/root/.netbeans/remote/raspberrypi/tony-notebook-Windows-x86_64/D/TM470/bcm2835-1.50'
