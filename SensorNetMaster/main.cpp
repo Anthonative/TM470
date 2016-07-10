@@ -1,27 +1,20 @@
  
  
- /** RF24Mesh_Example_Master.ino by TMRh20
-  * 
-  * Note: This sketch only functions on -Arduino Due-
-  *
-  * This example sketch shows how to manually configure a node via RF24Mesh as a master node, which
-  * will receive all data from sensor nodes.
-  *
-  * The nodes can change physical or logical position in the network, and reconnect through different
-  * routing nodes as required. The master node manages the address assignments for the individual nodes
-  * in a manner similar to DHCP.
-  *
+ /**Based on RF24Mesh_Example_Master.ino by TMRh20
   */
   
 #include <RF24Mesh/RF24Mesh.h> 
 #include <RF24/RF24.h>
 #include <RF24Network/RF24Network.h>
+#include <ncurses.h>
 
 
 RF24 radio(RPI_V2_GPIO_P1_15, BCM2835_SPI_CS0, BCM2835_SPI_SPEED_8MHZ);  
 RF24Network network(radio);
 RF24Mesh mesh(radio,network);
 
+//Function Declarations
+bool sendNodeInstructions(int16_t nodeID);
 
 
 int main(int argc, char** argv) {
@@ -31,6 +24,9 @@ int main(int argc, char** argv) {
   // Connect to the mesh
   printf("start\n");
   mesh.begin();
+  radio.setPALevel(RF24_PA_MAX);
+  radio.setDataRate(RF24_250KBPS);
+ // radio.setChannel(80);
   radio.printDetails();
 
 while(1)
@@ -46,18 +42,31 @@ while(1)
   
   // Check for incoming data from the sensors
   while(network.available()){
-//    printf("rcv\n");
+
     RF24NetworkHeader header;
     network.peek(header);
     
-    uint32_t dat=0;
+    float dat=0;
+    int16_t nodeID = mesh.getNodeID(header.from_node);
     switch(header.type){
-      // Display the incoming millis() values from the sensor nodes
-      case 'M': network.read(header,&dat,sizeof(dat)); 
-                printf("Rcv %u from 0%o\n",dat,header.from_node);
-                 break;
+      //Temperature
+      case 'T': network.read(header,&dat,sizeof(dat)); 
+                printf("Temperature %f from %hi\n",dat,nodeID);
+                break;
+      //Humidity
+      case 'H': network.read(header,&dat,sizeof(dat));
+                printf("Humidity %f from %hi\n",dat,nodeID);
+                break;
+      //Instruction request
+      case 'I': network.read(header,0,0);
+                if(!sendNodeInstructions(nodeID)){
+                  printf("!Failed to send instructions to %hi\n", nodeID);
+                }
+                else printf("Instructions sent successfully to %hi\n", nodeID);                   
+                break;
+      
       default:  network.read(header,0,0); 
-                printf("Rcv bad type %d from 0%o\n",header.type,header.from_node); 
+                printf("Rcv bad type %hho from %hi\n",header.type,nodeID); 
                 break;
     }
   }
@@ -66,6 +75,21 @@ delay(2);
 return 0;
 }
 
+/**For now just sends empty instruction message to node. In future will check if
+there are any instructions waiting to be sent and forward them**/
+bool sendNodeInstructions(int16_t nodeID){
+    int i = 10;
+    bool sent = 0;
+    while(i > 0){
+      if(mesh.write(0,'I',0,nodeID)){
+          i = 0;
+          sent = 1;
+      }
+      --i;
+      delay(2);
+    }
+    return sent;
+}      
       
       
       

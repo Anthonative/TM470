@@ -6,7 +6,7 @@
             <name>SensorNetMaster</name>
             <c-extensions/>
             <cpp-extensions>cpp</cpp-extensions>
-            <header-extensions/>
+            <header-extensions>h</header-extensions>
             <sourceEncoding>UTF-8</sourceEncoding>
             <make-dep-projects>
                 <make-dep-project>D:/TM470/rf24libs/RF24</make-dep-project>
@@ -23,6 +23,10 @@
                 </confElem>
                 <confElem>
                     <name>Release</name>
+                    <type>1</type>
+                </confElem>
+                <confElem>
+                    <name>Copy_of_Debug</name>
                     <type>1</type>
                 </confElem>
             </confList>

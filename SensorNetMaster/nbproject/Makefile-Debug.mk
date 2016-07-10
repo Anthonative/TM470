@@ -35,6 +35,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/_ext/c6de2ad/LocalIO.o \
 	${OBJECTDIR}/main.o
 
 
@@ -52,7 +53,7 @@ FFLAGS=
 ASFLAGS=
 
 # Link Libraries and Options
-LDLIBSOPTIONS=-lbcm2835 -lrf24-bcm -lrf24network -lrf24mesh
+LDLIBSOPTIONS=-lrf24-bcm -lrf24network -lrf24mesh -lncurses
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
@@ -62,10 +63,15 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/sensornetmaster: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/sensornetmaster ${OBJECTFILES} ${LDLIBSOPTIONS}
 
+${OBJECTDIR}/_ext/c6de2ad/LocalIO.o: /D/TM470/rf24libs/RF24/LocalIO.cpp 
+	${MKDIR} -p ${OBJECTDIR}/_ext/c6de2ad
+	${RM} "$@.d"
+	$(COMPILE.cc) -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/c6de2ad/LocalIO.o /D/TM470/rf24libs/RF24/LocalIO.cpp
+
 ${OBJECTDIR}/main.o: main.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.cpp
+	$(COMPILE.cc) -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.cpp
 
 # Subprojects
 .build-subprojects:

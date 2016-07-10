@@ -23,7 +23,7 @@ AS=as
 # Macros
 CND_PLATFORM=GNU-Linux
 CND_DLIB_EXT=so
-CND_CONF=Release
+CND_CONF=Copy_of_Debug
 CND_DISTDIR=dist
 CND_BUILDDIR=build
 
@@ -35,7 +35,8 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/_ext/c6de2ad/LocalIO.o
+	${OBJECTDIR}/_ext/c6de2ad/LocalIO.o \
+	${OBJECTDIR}/main.o
 
 
 # C Compiler Flags
@@ -60,12 +61,17 @@ LDLIBSOPTIONS=-lrf24-bcm -lrf24network -lrf24mesh -lncurses
 
 ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/sensornetmaster: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
-	g++ -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/sensornetmaster ${OBJECTFILES} ${LDLIBSOPTIONS}
+	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/sensornetmaster ${OBJECTFILES} ${LDLIBSOPTIONS}
 
 ${OBJECTDIR}/_ext/c6de2ad/LocalIO.o: /D/TM470/rf24libs/RF24/LocalIO.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/c6de2ad
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/c6de2ad/LocalIO.o /D/TM470/rf24libs/RF24/LocalIO.cpp
+
+${OBJECTDIR}/main.o: main.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.cpp
 
 # Subprojects
 .build-subprojects:
