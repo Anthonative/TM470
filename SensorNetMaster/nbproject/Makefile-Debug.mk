@@ -35,8 +35,9 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/_ext/c6de2ad/LocalIO.o \
-	${OBJECTDIR}/main.o
+	${OBJECTDIR}/LocalIO.o \
+	${OBJECTDIR}/SensorValue.o \
+	${OBJECTDIR}/sensornetMain.o
 
 
 # C Compiler Flags
@@ -63,15 +64,20 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/sensornetmaster: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/sensornetmaster ${OBJECTFILES} ${LDLIBSOPTIONS}
 
-${OBJECTDIR}/_ext/c6de2ad/LocalIO.o: /D/TM470/rf24libs/RF24/LocalIO.cpp 
-	${MKDIR} -p ${OBJECTDIR}/_ext/c6de2ad
-	${RM} "$@.d"
-	$(COMPILE.cc) -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/c6de2ad/LocalIO.o /D/TM470/rf24libs/RF24/LocalIO.cpp
-
-${OBJECTDIR}/main.o: main.cpp 
+${OBJECTDIR}/LocalIO.o: LocalIO.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.cpp
+	$(COMPILE.cc) -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/LocalIO.o LocalIO.cpp
+
+${OBJECTDIR}/SensorValue.o: SensorValue.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/SensorValue.o SensorValue.cpp
+
+${OBJECTDIR}/sensornetMain.o: sensornetMain.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/sensornetMain.o sensornetMain.cpp
 
 # Subprojects
 .build-subprojects:

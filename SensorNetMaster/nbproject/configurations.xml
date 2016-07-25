@@ -4,7 +4,8 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
-      <itemPath>D:/TM470/rf24libs/RF24/IOLocal.h</itemPath>
+      <itemPath>LocalIO.h</itemPath>
+      <itemPath>SensorValue.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -13,9 +14,10 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
-      <itemPath>D:/TM470/rf24libs/RF24/LocalIO.cpp</itemPath>
+      <itemPath>LocalIO.cpp</itemPath>
+      <itemPath>SensorValue.cpp</itemPath>
       <itemPath>D:/TM470/rf24libs/RF24Mesh/examples_RPi/dhcplist.txt</itemPath>
-      <itemPath>main.cpp</itemPath>
+      <itemPath>sensornetMain.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
                    displayName="Test Files"
@@ -29,9 +31,6 @@
       <itemPath>Makefile</itemPath>
     </logicalFolder>
   </logicalFolder>
-  <sourceRootList>
-    <Elem>../rf24libs/RF24</Elem>
-  </sourceRootList>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
     <conf name="Debug" type="1">
@@ -85,16 +84,20 @@
           </makeArtifact>
         </requiredProjects>
       </compileType>
-      <item path="D:/TM470/rf24libs/RF24/IOLocal.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="D:/TM470/rf24libs/RF24/LocalIO.cpp" ex="false" tool="1" flavor2="0">
-      </item>
       <item path="D:/TM470/rf24libs/RF24Mesh/examples_RPi/dhcplist.txt"
             ex="false"
             tool="3"
             flavor2="0">
       </item>
-      <item path="main.cpp" ex="false" tool="1" flavor2="0">
+      <item path="LocalIO.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="LocalIO.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="SensorValue.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="SensorValue.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="sensornetMain.cpp" ex="false" tool="1" flavor2="0">
       </item>
     </conf>
     <conf name="Release" type="1">
@@ -161,14 +164,20 @@
           </makeArtifact>
         </requiredProjects>
       </compileType>
-      <item path="D:/TM470/rf24libs/RF24/IOLocal.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="D:/TM470/rf24libs/RF24/LocalIO.cpp" ex="false" tool="1" flavor2="0">
-      </item>
       <item path="D:/TM470/rf24libs/RF24Mesh/examples_RPi/dhcplist.txt"
             ex="false"
             tool="3"
             flavor2="0">
+      </item>
+      <item path="LocalIO.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="LocalIO.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="SensorValue.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="SensorValue.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="sensornetMain.cpp" ex="false" tool="1" flavor2="0">
       </item>
     </conf>
     <conf name="Copy_of_Debug" type="1">
@@ -178,10 +187,21 @@
         <rebuildPropChanged>false</rebuildPropChanged>
       </toolsSet>
       <compileType>
+        <cTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </cTool>
         <ccTool>
           <developmentMode>5</developmentMode>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
         </ccTool>
         <linkerTool>
+          <linkerDynSerch>
+            <pElem>.</pElem>
+          </linkerDynSerch>
           <linkerLibItems>
             <linkerOptionItem>-lrf24-bcm</linkerOptionItem>
             <linkerOptionItem>-lrf24network</linkerOptionItem>
@@ -234,16 +254,20 @@
                             group="bin"/>
         </packFileList>
       </packaging>
-      <item path="D:/TM470/rf24libs/RF24/IOLocal.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="D:/TM470/rf24libs/RF24/LocalIO.cpp" ex="false" tool="1" flavor2="0">
-      </item>
       <item path="D:/TM470/rf24libs/RF24Mesh/examples_RPi/dhcplist.txt"
             ex="false"
             tool="3"
             flavor2="0">
       </item>
-      <item path="main.cpp" ex="false" tool="1" flavor2="0">
+      <item path="LocalIO.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="LocalIO.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="SensorValue.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="SensorValue.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="sensornetMain.cpp" ex="false" tool="1" flavor2="0">
       </item>
     </conf>
   </confs>

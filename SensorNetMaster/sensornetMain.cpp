@@ -7,18 +7,20 @@
 #include <RF24/RF24.h>
 #include <RF24Network/RF24Network.h>
 #include "LocalIO.h"
+#include "SensorValue.h"
+
+#define VALUESOUT "/etc/sensornet/sensorvalues"
 
 RF24 radio(RPI_V2_GPIO_P1_15, BCM2835_SPI_CS0, BCM2835_SPI_SPEED_8MHZ);  
 RF24Network network(radio);
 RF24Mesh mesh(radio,network);
-LocalIO localIO;
 
 //Function Declarations
 bool sendNodeInstructions(int16_t nodeID);
 
 
 int main(int argc, char** argv) {
-  
+  LocalIO valuesOut(VALUESOUT);
   // Set the nodeID to 0 for the master node
   mesh.setNodeID(0);
   // Connect to the mesh
@@ -48,33 +50,43 @@ while(1)
     
     float dat=0;
     int16_t nodeID = mesh.getNodeID(header.from_node);
-    
-    switch(header.type){
+    char type = header.type;
+    switch(type){
       //Temperature
-      case 'T': network.read(header,&dat,sizeof(dat)); 
-                printf("Temperature %f from %i\n",dat,nodeID);
-                localIO.stringOut();
+      case 'T': {
+                network.read(header,&dat,sizeof(dat)); 
+                SensorValue value(type,nodeID,dat);
+                printf(value.ToString());
+                valuesOut.stringOut(value.ToString());
                 break;
-      //Humidity
-      case 'H': network.read(header,&dat,sizeof(dat));
-                printf("Humidity %f from %i\n",dat,nodeID);
-                localIO.stringOut();
-                break;
-      //Instruction request
-      case 'I': network.read(header,0,0);
-                if(!sendNodeInstructions(nodeID)){
-                  printf("!Failed to send instructions to %i\n", nodeID);
                 }
-                else printf("Instructions sent successfully to %i\n", nodeID);                   
+      //Humidity
+      case 'H': {
+                network.read(header,&dat,sizeof(dat));
+                SensorValue value(type,nodeID,dat);
+                printf(value.ToString());
+                valuesOut.stringOut(value.ToString());
                 break;
+                } 
+      //Instruction request
+      case 'I': {
+                network.read(header,0,0);
+                if(!sendNodeInstructions(nodeID)){
+                  printf("!Failed to send instructions to %hi\n", nodeID);
+                }
+                else printf("Instructions sent successfully to %hi\n", nodeID);                   
+                break;
+                }
       
-      default:  network.read(header,0,0); 
-                printf("Rcv bad type %hho from %i\n",header.type,nodeID); 
+      default:  {
+                network.read(header,0,0); 
+                printf("Rcv bad type %hho from %hi\n",header.type,nodeID); 
                 break;
+                }
     }
   }
 delay(2);
-  }
+ }
 return 0;
 }
 

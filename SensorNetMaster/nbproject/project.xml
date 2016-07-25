@@ -13,9 +13,7 @@
                 <make-dep-project>D:/TM470/rf24libs/RF24Network</make-dep-project>
                 <make-dep-project>D:/TM470/rf24libs/RF24Mesh</make-dep-project>
             </make-dep-projects>
-            <sourceRootList>
-                <sourceRootElem>../rf24libs/RF24</sourceRootElem>
-            </sourceRootList>
+            <sourceRootList/>
             <confList>
                 <confElem>
                     <name>Debug</name>
