@@ -19,7 +19,7 @@ public class IPCTest {
     /**
      * @param args the command line arguments
      */
-    private static final String INFIFO = "/etc/sensornet/sensornetvalues";
+    private static final String INFIFO = "/etc/sensornet/sensorvalues";
     public static void main(String[] args) {
         // TODO code application logic here
         BufferedReader in;
