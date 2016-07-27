@@ -21,7 +21,7 @@ public:
     LocalIO();
     LocalIO(char const* path);
     virtual ~LocalIO();
-    void stringOut(char* output);
+    void stringOut(std::string output);
 private:
     char const* fifoPath;
 };

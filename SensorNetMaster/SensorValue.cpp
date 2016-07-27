@@ -15,6 +15,7 @@
 #include "LocalIO.h"
 #include<string.h>
 #include<cstdio>
+#include <sstream>
     
 
 SensorValue::SensorValue(char type, uint8_t nodeID, float value) {
@@ -23,9 +24,11 @@ SensorValue::SensorValue(char type, uint8_t nodeID, float value) {
     SetValue(value);
 }
 
-char* SensorValue::ToString(){
-    char* out;
-    sprintf(out,"%i,%c,%f",nodeID,type,value);
+std::string SensorValue::ToString(){
+    std::string out;
+    std::stringstream ostream;
+    ostream << (int)nodeID << ',' << type << ',' << value;
+    out = ostream.str();
     return out;
 }
 

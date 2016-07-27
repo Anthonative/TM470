@@ -27,7 +27,7 @@ public:
     uint8_t GetNodeID() const;
     void SetType(char type);
     char GetType() const;
-    char* ToString();
+    std::string ToString();
 private:
     char type;
     uint8_t nodeID;

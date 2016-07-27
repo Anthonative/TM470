@@ -29,7 +29,7 @@ LocalIO::~LocalIO(){
     
 }
 
-void LocalIO::stringOut(char* output){
+void LocalIO::stringOut(string output){
     printf("Opening outFIFO\n");
   outFIFO = fopen (fifoPath,"w");
   printf("...\n");
@@ -38,6 +38,6 @@ void LocalIO::stringOut(char* output){
       exit(EXIT_FAILURE);
   }
   printf("Open\n");
- printf("%i\n",fprintf(outFIFO,output));
+ printf("%i\n",fprintf(outFIFO,"%s",output.c_str()));
  fclose(outFIFO);
 }

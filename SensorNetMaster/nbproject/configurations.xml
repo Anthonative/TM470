@@ -10,13 +10,13 @@
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
                    projectFiles="true">
+      <itemPath>D:/TM470/rf24libs/RF24Mesh/examples_RPi/dhcplist.txt</itemPath>
     </logicalFolder>
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
       <itemPath>LocalIO.cpp</itemPath>
       <itemPath>SensorValue.cpp</itemPath>
-      <itemPath>D:/TM470/rf24libs/RF24Mesh/examples_RPi/dhcplist.txt</itemPath>
       <itemPath>sensornetMain.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"

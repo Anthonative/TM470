@@ -20,6 +20,7 @@ bool sendNodeInstructions(int16_t nodeID);
 
 
 int main(int argc, char** argv) {
+
   LocalIO valuesOut(VALUESOUT);
   // Set the nodeID to 0 for the master node
   mesh.setNodeID(0);
@@ -51,21 +52,27 @@ while(1)
     float dat=0;
     int16_t nodeID = mesh.getNodeID(header.from_node);
     char type = header.type;
+
     switch(type){
       //Temperature
+
       case 'T': {
+          printf("T\n");
                 network.read(header,&dat,sizeof(dat)); 
                 SensorValue value(type,nodeID,dat);
-                printf(value.ToString());
-                valuesOut.stringOut(value.ToString());
+                std::string output = value.ToString() + ",end";
+                printf("%s",output.c_str());
+                valuesOut.stringOut(output);
                 break;
                 }
       //Humidity
       case 'H': {
-                network.read(header,&dat,sizeof(dat));
+          printf("H\n");
+                network.read(header,&dat,sizeof(dat)); 
                 SensorValue value(type,nodeID,dat);
-                printf(value.ToString());
-                valuesOut.stringOut(value.ToString());
+                std::string output = value.ToString() + ",end";
+                printf("%s",output.c_str());
+                valuesOut.stringOut(output);
                 break;
                 } 
       //Instruction request
