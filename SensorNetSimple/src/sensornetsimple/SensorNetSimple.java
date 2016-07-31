@@ -45,6 +45,7 @@ public class SensorNetSimple {
                     catch(Exception e){
                         e.printStackTrace();
                     }
+                    saveNodeMap();
                 }
             }
         }
@@ -62,7 +63,7 @@ public class SensorNetSimple {
               String valueString = in.readLine();
               String[] split = valueString.split(";");
                 if (split.length != 3){
-                    Exception e = new Exception("Invalid sensor value string from mesh");
+                    Exception e = new Exception("Invalid sensor value string from mesh" + valueString);
                     throw e;
                 }
               int nodeID = Integer.parseInt(split[0]);
