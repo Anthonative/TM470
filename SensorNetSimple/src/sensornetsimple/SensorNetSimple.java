@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.time.LocalDateTime;
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  *
@@ -37,7 +39,12 @@ public class SensorNetSimple {
             
             while(true){
                 if(in.ready()){
-                    readValues(in);
+                    try{
+                        readValues(in);
+                    }
+                    catch(Exception e){
+                        e.printStackTrace();
+                    }
                 }
             }
         }
@@ -48,12 +55,24 @@ public class SensorNetSimple {
         
     }
     
-    private static void readValues(BufferedReader in){
+    private static void readValues(BufferedReader in) throws Exception{
         try{
             while(in.ready()){
               System.out.println("Reading next value");
-              System.out.println(LocalDateTime.now() + "," + in.readLine());
-            }
+              String valueString = in.readLine();
+              String[] split = valueString.split(";");
+                if (split.length != 3){
+                    Exception e = new Exception("Invalid sensor value string from mesh");
+                    throw e;
+                }
+              int nodeID = Integer.parseInt(split[0]);
+              String type = split[1];
+              double value = Double.parseDouble(split[2]);
+              nodeMap.getNode(nodeID).addValue(LocalDateTime.now(), type, value);
+              System.out.println("New value recieved.");
+              System.out.println(LocalDateTime.now());
+              printLastValues();
+         }
         }
         catch(IOException e){
             System.out.println("A thing went wrong");
@@ -105,5 +124,17 @@ public class SensorNetSimple {
             catch(IOException e){
                 e.printStackTrace();
             }
+    }
+    
+    public static void printLastValues(){
+        System.out.println("Most recent values:");
+        for(Map.Entry<Integer,Node> nodeEntry: nodeMap.getNodeMap().entrySet()){
+            Node node = nodeEntry.getValue();
+            for(Map.Entry<String, SensorValue> valueEntry: node.getLastValues().entrySet()){
+                SensorValue value = valueEntry.getValue();
+                System.out.println(node.getName() + " : " + value.getTime() + " : " 
+                        + value.getType() + " : " + value.getValue());
+            }
+        }
     }
 }

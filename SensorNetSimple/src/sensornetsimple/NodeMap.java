@@ -29,14 +29,21 @@ public class NodeMap implements Serializable{
     * @return 
     */
     public Node getNode(int nodeID){
-        if(nodeMap.containsKey(nodeID)){
-            return nodeMap.get(nodeID);
+        if(getNodeMap().containsKey(nodeID)){
+            return getNodeMap().get(nodeID);
         }
         else{
             Node newNode = new Node(nodeID);
-            nodeMap.put(nodeID, newNode);
-            return nodeMap.get(nodeID);
+            getNodeMap().put(nodeID, newNode);
+            return getNodeMap().get(nodeID);
         }
            
+    }
+
+    /**
+     * @return the nodeMap
+     */
+    public Map<Integer, Node> getNodeMap() {
+        return nodeMap;
     }
 }

@@ -44,16 +44,8 @@ public class Node implements Serializable{
      * @throws Exception 
      */
      
-    public void addValue(LocalDateTime time, String inValue) throws Exception{
-        SensorValue newValue;
-        String[] split = inValue.split(";");
-        if (split.length != 3){
-            Exception e = new Exception("Invalid sensor value string from mesh");
-            throw e;
-        }
-        String type = split[1];
-        double value = Double.parseDouble(split[2]);
-        newValue = new SensorValue(time,type,value);
+    public void addValue(LocalDateTime time, String type, double value) throws Exception{
+        SensorValue newValue = new SensorValue(time,type,value);
         if(getLastValues().containsKey(type)){
             if(!valueHistory.containsKey(type)){
                 getValueHistory().put(type, new TreeMap());
