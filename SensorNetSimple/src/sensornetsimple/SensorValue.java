@@ -4,15 +4,25 @@
  * and open the template in the editor.
  */
 package sensornetsimple;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
  *
  * @author antho_000
  */
-public class SensorValue {
+public class SensorValue implements Serializable{
+    /**
+     * @serial 
+     */
     private final LocalDateTime time;
+    /**
+     * @serial 
+     */
     private final String type;
+    /**
+     * @serial 
+     */
     private final double value;
 
     SensorValue(LocalDateTime time, String type, double value){

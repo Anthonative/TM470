@@ -6,11 +6,14 @@
 package sensornetsimple;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  *
@@ -21,8 +24,11 @@ public class SensorNetSimple {
      * @param args the command line arguments
      */
     private static final String INFIFO = "/etc/sensornet/sensorvalues";
+    private static final String NODEMAP = "/etc/sensornet/nodemap.ser";
+    private static NodeMap nodeMap;
+            
     public static void main(String[] args) {
-        // TODO code application logic here
+        init();
         BufferedReader in;
         System.out.println("Opening inFIFO");
         try{
@@ -54,5 +60,50 @@ public class SensorNetSimple {
         }
     }
     
+    private static void init(){
+        File nodeMapFile = new File(NODEMAP);
+        if(!nodeMapFile.isFile()){
+            try{
+            nodeMapFile.createNewFile();
+            }
+            catch(IOException e){
+                e.printStackTrace();
+            }
+            nodeMap = new NodeMap();
+            saveNodeMap();
+        }
+        else{
+            openNodeMap();
+        }
+    }
     
+    private static void openNodeMap(){
+        try{
+            FileInputStream fileIn = new FileInputStream(NODEMAP);
+            ObjectInputStream nodeMapIn = new ObjectInputStream(fileIn);
+            nodeMap = (NodeMap)nodeMapIn.readObject();
+            nodeMapIn.close();
+            fileIn.close();
+        }
+        catch(IOException e){
+            e.printStackTrace();
+        }
+        catch(ClassNotFoundException e){
+            e.printStackTrace();
+        }
+    }
+    
+    private static void saveNodeMap(){
+        try{
+                FileOutputStream fileOut = new FileOutputStream(NODEMAP);
+                ObjectOutputStream nodeMapOut = new ObjectOutputStream(fileOut);
+                nodeMapOut.writeObject(nodeMap);
+                nodeMapOut.close();
+                fileOut.close();
+                System.out.println("Node map saved.");
+            }
+            catch(IOException e){
+                e.printStackTrace();
+            }
+    }
 }
