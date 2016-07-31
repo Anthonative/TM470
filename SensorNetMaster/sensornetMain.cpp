@@ -7,7 +7,7 @@
 #include <RF24/RF24.h>
 #include <RF24Network/RF24Network.h>
 #include "LocalIO.h"
-#include "SensorValue.h"
+#include <sstream>
 
 #define VALUESOUT "/etc/sensornet/sensorvalues"
 
@@ -49,7 +49,6 @@ while(1)
     RF24NetworkHeader header;
     network.peek(header);
     
-    float dat=0;
     int16_t nodeID = mesh.getNodeID(header.from_node);
     char type = header.type;
 
@@ -58,21 +57,23 @@ while(1)
 
       case 'T': {
           printf("T\n");
-                network.read(header,&dat,sizeof(dat)); 
-                SensorValue value(type,nodeID,dat);
-                std::string output = value.ToString() + ",end";
-                printf("%s",output.c_str());
-                valuesOut.stringOut(output);
+                float value;
+                network.read(header,&value,sizeof(value)); 
+                std::stringstream outstream;
+                outstream << nodeID << ";Temperature;" << value;
+                printf("%s\n",outstream.str().c_str());
+                valuesOut.stringOut(outstream.str());
                 break;
                 }
       //Humidity
       case 'H': {
           printf("H\n");
-                network.read(header,&dat,sizeof(dat)); 
-                SensorValue value(type,nodeID,dat);
-                std::string output = value.ToString() + ",end";
-                printf("%s",output.c_str());
-                valuesOut.stringOut(output);
+                float value;
+                network.read(header,&value,sizeof(value)); 
+                std::stringstream outstream;
+                outstream << nodeID << ";Humidity;" << value;
+                printf("%s\n",outstream.str().c_str());
+                valuesOut.stringOut(outstream.str());
                 break;
                 } 
       //Instruction request

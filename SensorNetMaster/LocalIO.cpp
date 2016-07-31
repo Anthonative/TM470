@@ -30,14 +30,11 @@ LocalIO::~LocalIO(){
 }
 
 void LocalIO::stringOut(string output){
-    printf("Opening outFIFO\n");
   outFIFO = fopen (fifoPath,"w");
-  printf("...\n");
   if(outFIFO == NULL){
       printf("ERROR: Could not open output FIFO\n");
       exit(EXIT_FAILURE);
   }
-  printf("Open\n");
  printf("%i\n",fprintf(outFIFO,"%s",output.c_str()));
  fclose(outFIFO);
 }

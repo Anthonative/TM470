@@ -5,19 +5,28 @@
                    displayName="Header Files"
                    projectFiles="true">
       <itemPath>LocalIO.h</itemPath>
-      <itemPath>SensorValue.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
                    projectFiles="true">
-      <itemPath>D:/TM470/rf24libs/RF24Mesh/examples_RPi/dhcplist.txt</itemPath>
     </logicalFolder>
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
       <itemPath>LocalIO.cpp</itemPath>
-      <itemPath>SensorValue.cpp</itemPath>
+      <itemPath>D:/TM470/rf24libs/RF24Mesh/examples_RPi/dhcplist.txt</itemPath>
       <itemPath>sensornetMain.cpp</itemPath>
+    </logicalFolder>
+    <logicalFolder name="TestFiles"
+                   displayName="Test Files"
+                   projectFiles="false"
+                   kind="TEST_LOGICAL_FOLDER">
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
                    displayName="Test Files"
@@ -94,8 +103,6 @@
       <item path="LocalIO.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="SensorValue.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="SensorValue.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="sensornetMain.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -174,8 +181,6 @@
       <item path="LocalIO.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="SensorValue.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="SensorValue.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="sensornetMain.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -264,8 +269,6 @@
       <item path="LocalIO.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="SensorValue.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="SensorValue.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="sensornetMain.cpp" ex="false" tool="1" flavor2="0">
       </item>
