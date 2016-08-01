@@ -59,10 +59,10 @@ while(1)
           printf("T\n");
                 float value;
                 network.read(header,&value,sizeof(value)); 
-                std::stringstream outstream;
-                outstream << nodeID << ";Temperature;" << value;
-                printf("%s\n",outstream.str().c_str());
-                valuesOut.stringOut(outstream.str());
+                std::stringstream outstreamT;
+                outstreamT << nodeID << ";Temperature;" << value;
+                printf("%s\n",outstreamT.str().c_str());
+                valuesOut.stringOut(outstreamT.str());
                 break;
                 }
       //Humidity
@@ -70,10 +70,10 @@ while(1)
           printf("H\n");
                 float value;
                 network.read(header,&value,sizeof(value)); 
-                std::stringstream outstream;
-                outstream << nodeID << ";Humidity;" << value;
-                printf("%s\n",outstream.str().c_str());
-                valuesOut.stringOut(outstream.str());
+                std::stringstream outstreamH;
+                outstreamH << nodeID << ";Humidity;" << value;
+                printf("%s\n",outstreamH.str().c_str());
+                valuesOut.stringOut(outstreamH.str());
                 break;
                 } 
       //Instruction request
