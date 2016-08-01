@@ -44,6 +44,13 @@ public class Node implements Serializable{
      * @throws Exception 
      */
      
+    /**
+     * Sets last value to input value.Moves old last value to value history
+     * @param time
+     * @param type
+     * @param value
+     * @throws Exception
+     */
     public void addValue(LocalDateTime time, String type, double value) throws Exception{
         SensorValue newValue = new SensorValue(time,type,value);
         if(getLastValues().containsKey(type)){
