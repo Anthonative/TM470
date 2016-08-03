@@ -6,41 +6,42 @@
 package sensornet;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import static sensornet.Application.NODE_MAP_PATH;
+import static sensornet.Application.INFIFO_PATH;
 
 /**
  *
  * @author antho_000
  */
-@RestController
+
 public class SensorNetThread implements Runnable{
     /**
      * @param args the command line arguments
      */
-    private final String INFIFO = "/etc/sensornet/sensorvalues";
-    private final String NODEMAP = "/etc/sensornet/nodemap.ser";
+    
     private NodeMap nodeMap;
     private final AtomicLong counter = new AtomicLong();
+    
+    public SensorNetThread(NodeMap nodeMap){
+        this.nodeMap = nodeMap;
+        saveNodeMap();
+    }
             
     @Override
     public void run() {
-        init();
         BufferedReader in;
         System.out.println("Opening inFIFO");
         try{
-            in = new BufferedReader(new FileReader(INFIFO));
+            in = new BufferedReader(new FileReader(INFIFO_PATH));
             System.out.println("Open");
             
             while(true){
@@ -86,44 +87,15 @@ public class SensorNetThread implements Runnable{
         }
     }
     
-    private void init(){
-        File nodeMapFile = new File(NODEMAP);
-        if(!nodeMapFile.isFile()){
-            try{
-            nodeMapFile.createNewFile();
-            }
-            catch(IOException e){
-                e.printStackTrace();
-            }
-            nodeMap = new NodeMap();
-            saveNodeMap();
-        }
-        else{
-            openNodeMap();
-        }
-    }
     
-    private void openNodeMap(){
-        try{
-            FileInputStream fileIn = new FileInputStream(NODEMAP);
-            ObjectInputStream nodeMapIn = new ObjectInputStream(fileIn);
-            nodeMap = (NodeMap)nodeMapIn.readObject();
-            nodeMapIn.close();
-            fileIn.close();
-        }
-        catch(IOException e){
-            e.printStackTrace();
-        }
-        catch(ClassNotFoundException e){
-            e.printStackTrace();
-        }
-    }
+    
+    
     
     private void saveNodeMap(){
         try{
-                FileOutputStream fileOut = new FileOutputStream(NODEMAP);
+                FileOutputStream fileOut = new FileOutputStream(NODE_MAP_PATH);
                 ObjectOutputStream nodeMapOut = new ObjectOutputStream(fileOut);
-                nodeMapOut.writeObject(getNodeMap());
+                nodeMapOut.writeObject(nodeMap);
                 nodeMapOut.close();
                 fileOut.close();
                 System.out.println("Node map saved.");
@@ -139,23 +111,17 @@ public class SensorNetThread implements Runnable{
 
      public String stringLastValues(){
         String out = "Most recent values:\n";
-        for (Map.Entry<Integer,Node> nodeEntry : getNodeMap().getNodeMap().entrySet()) {
-            Node node = nodeEntry.getValue();
-            for(Map.Entry<String, SensorValue> valueEntry: node.getLastValues().entrySet()){
-                SensorValue value = valueEntry.getValue();
+        for (Map.Entry<Integer,NodeSerializable> nodeEntry : nodeMap.getNodeMap().entrySet()) {
+            NodeSerializable node = nodeEntry.getValue();
+            for(Map.Entry<String, SensorValueSerializable> valueEntry: node.getLastValues().entrySet()){
+                SensorValueSerializable value = valueEntry.getValue();
                 out = out + node.getName() + " : " + value.getTime() + " : " 
                         + value.getType() + " : " + value.getValue() + "\n";
             }
         }
         return out;
     }
-    /**
-     * @return the nodeMap
-     */
-     @ModelAttribute("nodeMap")
-    public NodeMap getNodeMap() {
-        return nodeMap;
-    }
+   
     
     
 }

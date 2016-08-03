@@ -13,7 +13,7 @@ import java.util.TreeMap;
  *
  * @author antho_000
  */
-public class Node implements Serializable{
+public class NodeSerializable implements Serializable{
     /**
      * @serial 
      */
@@ -25,13 +25,13 @@ public class Node implements Serializable{
     /**
      * @serial 
      */
-    private final TreeMap<String, TreeMap<LocalDateTime, SensorValue>> valueHistory;
+    private volatile TreeMap<String, TreeMap<LocalDateTime, SensorValueSerializable>> valueHistory;
     /**
      * @serial 
      */
-    private final TreeMap<String, SensorValue> lastValues;
+    private volatile TreeMap<String, SensorValueSerializable> lastValues;
         
-     Node(int nodeID){
+     NodeSerializable(int nodeID){
         this.nodeID = nodeID;
         this.name = String.valueOf(nodeID);
         this.lastValues = new TreeMap();
@@ -51,8 +51,8 @@ public class Node implements Serializable{
      * @param value
      * @throws Exception
      */
-    public void addValue(LocalDateTime time, String type, double value) throws Exception{
-        SensorValue newValue = new SensorValue(time,type,value);
+    public synchronized void addValue(LocalDateTime time, String type, double value) throws Exception{
+        SensorValueSerializable newValue = new SensorValueSerializable(time,type,value);
         if(getLastValues().containsKey(type)){
             if(!valueHistory.containsKey(type)){
                 getValueHistory().put(type, new TreeMap());
@@ -71,28 +71,28 @@ public class Node implements Serializable{
     /**
      * @return the name
      */
-    public String getName() {
+    public synchronized String getName() {
         return name;
     }
 
     /**
      * @param name the name to set
      */
-    public void setName(String name) {
+    public synchronized void setName(String name) {
         this.name = name;
     }
 
     /**
      * @return the valueHistory
      */
-    public TreeMap<String, TreeMap<LocalDateTime, SensorValue>> getValueHistory() {
+    public synchronized TreeMap<String, TreeMap<LocalDateTime, SensorValueSerializable>> getValueHistory() {
         return valueHistory;
     }
 
     /**
      * @return the lastValues
      */
-    public TreeMap<String, SensorValue> getLastValues() {
+    public synchronized TreeMap<String, SensorValueSerializable> getLastValues() {
         return lastValues;
     }
 }

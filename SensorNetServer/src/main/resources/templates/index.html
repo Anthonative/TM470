@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hello Spring Boot!</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<table style="width:80%">
+  <thead>
+    <tr>
+      <th>Node</th>
+      <th>Sensor</th>
+      <th>Time</th>
+      <th>Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr th:each="node : ${lastvaluesall}">
+      <td th:text="${node.key}">NodeName</td>
+       <table>
+           <tr th:each="sensormap : ${node.value}">
+           <td th:text="${sensormap.key}">Type</td>
+           <td th:text="${#temporals.format(sensormap.value.getTime(),'dd/MMM/yyyy HH:mm')}">Time</td>
+           <td th:text="${sensormap.value.getValue()}">Value</td>
+           </tr>
+       </table>
+    </tr>
+  </tbody>
+  </table>
+</body>
+</html>

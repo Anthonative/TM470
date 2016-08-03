@@ -16,24 +16,24 @@ public class NodeMap implements Serializable{
     /**
      * @serial 
      */
-    private final Map<Integer, Node> nodeMap;
+    private volatile Map<Integer, NodeSerializable> nodeMap;
     
     public NodeMap(){
         nodeMap = new TreeMap<>();
     }
     
    /**
-    * Returns Node the object which has nodeID. If nodeID is unknown, creates new node
+    * Returns NodeSerializable the object which has nodeID. If nodeID is unknown, creates new node
     * and adds to node map.
     * @param nodeID
     * @return 
     */
-    public Node getNode(int nodeID){
+    public synchronized NodeSerializable getNode(int nodeID){
         if(getNodeMap().containsKey(nodeID)){
             return getNodeMap().get(nodeID);
         }
         else{
-            Node newNode = new Node(nodeID);
+            NodeSerializable newNode = new NodeSerializable(nodeID);
             getNodeMap().put(nodeID, newNode);
             return getNodeMap().get(nodeID);
         }
@@ -43,7 +43,7 @@ public class NodeMap implements Serializable{
     /**
      * @return the nodeMap
      */
-    public Map<Integer, Node> getNodeMap() {
+    public synchronized Map<Integer, NodeSerializable> getNodeMap() {
         return nodeMap;
     }
 }

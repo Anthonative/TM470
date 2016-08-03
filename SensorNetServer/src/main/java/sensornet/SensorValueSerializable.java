@@ -4,46 +4,51 @@
  * and open the template in the editor.
  */
 package sensornet;
-
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
  *
- * @author Tony
+ * @author antho_000
  */
-public class SensorValue
-{
+public class SensorValueSerializable implements Serializable{
+    /**
+     * @serial 
+     */
     private final LocalDateTime time;
+    /**
+     * @serial 
+     */
     private final String type;
+    /**
+     * @serial 
+     */
     private final double value;
-    
-    public SensorValue(SensorValueSerializable sensorValue){
-        this.time = sensorValue.getTime();
-        this.type = sensorValue.getType();
-        this.value = sensorValue.getValue();
-    }
 
+    SensorValueSerializable(LocalDateTime time, String type, double value){
+        this.time=time;
+        this.type=type;
+        this.value=value;
+    }
     /**
      * @return the time
      */
-    public LocalDateTime getTime()
-    {
+    public LocalDateTime getTime() {
         return time;
     }
 
     /**
      * @return the type
      */
-    public String getType()
-    {
+    public String getType() {
         return type;
     }
 
     /**
      * @return the value
      */
-    public double getValue()
-    {
+    public double getValue() {
         return value;
     }
+    
 }
