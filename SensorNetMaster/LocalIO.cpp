@@ -35,6 +35,6 @@ void LocalIO::stringOut(string output){
       printf("ERROR: Could not open output FIFO\n");
       exit(EXIT_FAILURE);
   }
- printf("%i\n",fprintf(outFIFO,"%s",output.c_str()));
+ printf("%i\n",fprintf(outFIFO,"%s\n",output.c_str()));
  fclose(outFIFO);
 }
