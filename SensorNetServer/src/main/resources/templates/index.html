@@ -16,14 +16,14 @@
   </thead>
   <tbody>
     <tr th:each="node : ${lastvaluesall}">
-      <td th:text="${node.key}">NodeName</td>
-       <table>
+      <td th:text="${node.key}" rowspan = "5">NodeName</td>
+      <td>
            <tr th:each="sensormap : ${node.value}">
            <td th:text="${sensormap.key}">Type</td>
            <td th:text="${#temporals.format(sensormap.value.getTime(),'dd/MMM/yyyy HH:mm')}">Time</td>
            <td th:text="${sensormap.value.getValue()}">Value</td>
            </tr>
-       </table>
+           </td>
     </tr>
   </tbody>
   </table>

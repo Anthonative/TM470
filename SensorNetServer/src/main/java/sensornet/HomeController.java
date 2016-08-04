@@ -15,7 +15,7 @@ public class HomeController {
 	}
         
         @ModelAttribute("lastvaluesall")
-        public Map lastVaulesAll(){
+        public Map<String, Map<String,SensorValueSerializable>> lastVaulesAll(){
             Map<Integer, NodeSerializable> nodeMap = Application.getNodeMap().getNodeMap();
             TreeMap<String, Map<String,SensorValueSerializable>> values;
             values = new TreeMap();
