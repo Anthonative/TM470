@@ -7,9 +7,14 @@
 #include <RF24/RF24.h>
 #include <RF24Network/RF24Network.h>
 #include "LocalIO.h"
+#include "InstructionManager.h"
 #include <sstream>
 
 #define VALUESOUT "/etc/sensornet/sensorvalues"
+#define INSTRUCTIONSIN "etc/sensornet/instructions"
+
+InstructionManager instructionManager = InstructionManager(INSTRUCTIONSIN);
+LocalIO valuesOut(VALUESOUT);
 
 RF24 radio(RPI_V2_GPIO_P1_15, BCM2835_SPI_CS0, BCM2835_SPI_SPEED_8MHZ);  
 RF24Network network(radio);
@@ -20,16 +25,14 @@ bool sendNodeInstructions(int16_t nodeID);
 
 
 int main(int argc, char** argv) {
-
-  LocalIO valuesOut(VALUESOUT);
   // Set the nodeID to 0 for the master node
   mesh.setNodeID(0);
   // Connect to the mesh
   printf("start\n");
   mesh.begin();
+  //radio.setChannel(80);
   radio.setPALevel(RF24_PA_MAX);
   radio.setDataRate(RF24_250KBPS);
- // radio.setChannel(80);
   radio.printDetails();
 
 while(1)
@@ -51,31 +54,18 @@ while(1)
     
     int16_t nodeID = mesh.getNodeID(header.from_node);
     char type = header.type;
-
+    int8_t len = radio.getDynamicPayloadSize();
+    
     switch(type){
-      //Temperature
-
-      case 'T': {
-          printf("T\n");
-                float value;
-                network.read(header,&value,sizeof(value)); 
-                std::stringstream outstreamT;
-                outstreamT << nodeID << ";Temperature;" << value;
-                printf("%s\n",outstreamT.str().c_str());
-                valuesOut.stringOut(outstreamT.str());
+      //Value
+      case 'V': {
+          printf("V\n");
+                char* value[len];
+                network.read(header,&value,sizeof(value));
+                printf("%s\n",value);
+                valuesOut.stringOut(value);
                 break;
                 }
-      //Humidity
-      case 'H': {
-          printf("H\n");
-                float value;
-                network.read(header,&value,sizeof(value)); 
-                std::stringstream outstreamH;
-                outstreamH << nodeID << ";Humidity;" << value;
-                printf("%s\n",outstreamH.str().c_str());
-                valuesOut.stringOut(outstreamH.str());
-                break;
-                } 
       //Instruction request
       case 'I': {
                 network.read(header,0,0);

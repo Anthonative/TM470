@@ -29,12 +29,13 @@ LocalIO::~LocalIO(){
     
 }
 
-void LocalIO::stringOut(string output){
+void LocalIO::stringOut(char* output[]){
   outFIFO = fopen (fifoPath,"w");
   if(outFIFO == NULL){
       printf("ERROR: Could not open output FIFO\n");
       exit(EXIT_FAILURE);
   }
- printf("%i\n",fprintf(outFIFO,"%s\n",output.c_str()));
+ printf("%i\n",fprintf(outFIFO,"%s\n",output));
  fclose(outFIFO);
 }
+
