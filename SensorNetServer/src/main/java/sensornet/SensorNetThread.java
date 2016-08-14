@@ -5,18 +5,20 @@
  */
 package sensornet;
 
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.io.PrintWriter;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RestController;
 import static sensornet.Application.NODE_MAP_PATH;
 import static sensornet.Application.INFIFO_PATH;
+import static sensornet.Application.INSTRUCTIONS_PATH;
 
 /**
  *
@@ -39,7 +41,7 @@ public class SensorNetThread implements Runnable{
     @Override
     public void run() {
         BufferedReader in;
-        System.out.println("Opening inFIFO");
+        System.out.println("Opening FIFOs");
         try{
             in = new BufferedReader(new FileReader(INFIFO_PATH));
             System.out.println("Open");
@@ -54,6 +56,7 @@ public class SensorNetThread implements Runnable{
                     }
                     saveNodeMap();
                 }
+                sendInstructions();
             }
         }
         catch(IOException e){
@@ -76,6 +79,10 @@ public class SensorNetThread implements Runnable{
               int nodeID = Integer.parseInt(split[0]);
               String type = split[1];
               double value = Double.parseDouble(split[2]);
+              //add node to node map if not already known
+              if(!nodeMap.hasNode(nodeID)){
+                  nodeMap.addNode(nodeID);
+              }
               nodeMap.getNode(nodeID).addValue(LocalDateTime.now(), type, value);
               System.out.println("New value recieved.");
               System.out.println(LocalDateTime.now());
@@ -87,7 +94,18 @@ public class SensorNetThread implements Runnable{
         }
     }
     
-    
+    private void sendInstructions() throws IOException{
+        //System.out.println("Send Instructions");
+        try (BufferedOutputStream instructionsOut = new BufferedOutputStream(new FileOutputStream(INSTRUCTIONS_PATH))) {
+            List<String> insructionList = nodeMap.getInstructionList();
+            PrintWriter printWriter = new PrintWriter(instructionsOut);
+            for(String intruction : insructionList){
+                printWriter.println(intruction);
+            }
+            printWriter.println("END");
+            instructionsOut.flush();
+        }
+    }
     
     
     
@@ -111,10 +129,10 @@ public class SensorNetThread implements Runnable{
 
      public String stringLastValues(){
         String out = "Most recent values:\n";
-        for (Map.Entry<Integer,NodeSerializable> nodeEntry : nodeMap.getNodeMap().entrySet()) {
-            NodeSerializable node = nodeEntry.getValue();
-            for(Map.Entry<String, SensorValueSerializable> valueEntry: node.getLastValues().entrySet()){
-                SensorValueSerializable value = valueEntry.getValue();
+        for (Map.Entry<Integer,Node> nodeEntry : nodeMap.getNodeMap().entrySet()) {
+            Node node = nodeEntry.getValue();
+            for(Map.Entry<String, SensorValue> valueEntry: node.getLastValues().entrySet()){
+                SensorValue value = valueEntry.getValue();
                 out = out + node.getName() + " : " + value.getTime() + " : " 
                         + value.getType() + " : " + value.getValue() + "\n";
             }

@@ -12,6 +12,7 @@ import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect;
 @SpringBootApplication
 public class Application {
     public static final String INFIFO_PATH = "/etc/sensornet/sensorvalues";
+    public static final String INSTRUCTIONS_PATH = "/etc/sensornet/instructions";
     public static final String NODE_MAP_PATH = "/etc/sensornet/nodemap.ser";
     private static volatile NodeMap nodeMap;
     private static SensorNetThread sensorNetThread;

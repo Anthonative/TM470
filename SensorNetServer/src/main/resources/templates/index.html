@@ -1,24 +1,24 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Hello Spring Boot!</title>
+    <title>Sensor Network</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 </head>
 <body>
 <table style="width:80%">
   <thead>
     <tr>
-      <th>Node</th>
+      <th>Node</th>
       <th>Sensor</th>
       <th>Time</th>
       <th>Value</th>
     </tr>
   </thead>
   <tbody>
-    <tr th:each="node : ${lastvaluesall}">
-      <td th:text="${node.key}" rowspan = "5">NodeName</td>
-      <td>
-           <tr th:each="sensormap : ${node.value}">
+    <tr th:each="node : ${nodelist}">
+        <td th:rowspan="${node.getLastValues().size() + 1}"><a th:href="@{/node(nodeID=${node.getNodeID()})}" th:text="${node.getName()}"></a></td>
+           <td>
+           <tr th:each="sensormap : ${node.getLastValues()}">
            <td th:text="${sensormap.key}">Type</td>
            <td th:text="${#temporals.format(sensormap.value.getTime(),'dd/MMM/yyyy HH:mm')}">Time</td>
            <td th:text="${sensormap.value.getValue()}">Value</td>

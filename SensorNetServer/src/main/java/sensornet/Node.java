@@ -7,13 +7,15 @@ package sensornet;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.TreeMap;
 
 /**
  *
  * @author antho_000
  */
-public class NodeSerializable implements Serializable{
+public class Node implements Serializable{
     /**
      * @serial 
      */
@@ -25,13 +27,13 @@ public class NodeSerializable implements Serializable{
     /**
      * @serial 
      */
-    private volatile TreeMap<String, TreeMap<LocalDateTime, SensorValueSerializable>> valueHistory;
+    private volatile TreeMap<String, TreeMap<LocalDateTime, SensorValue>> valueHistory;
     /**
      * @serial 
      */
-    private volatile TreeMap<String, SensorValueSerializable> lastValues;
+    private volatile TreeMap<String, SensorValue> lastValues;
         
-     NodeSerializable(int nodeID){
+     Node(int nodeID){
         this.nodeID = nodeID;
         this.name = String.valueOf(nodeID);
         this.lastValues = new TreeMap();
@@ -52,7 +54,7 @@ public class NodeSerializable implements Serializable{
      * @throws Exception
      */
     public synchronized void addValue(LocalDateTime time, String type, double value) throws Exception{
-        SensorValueSerializable newValue = new SensorValueSerializable(time,type,value);
+        SensorValue newValue = new SensorValue(time,type,value);
         if(getLastValues().containsKey(type)){
             if(!valueHistory.containsKey(type)){
                 getValueHistory().put(type, new TreeMap());
@@ -85,14 +87,23 @@ public class NodeSerializable implements Serializable{
     /**
      * @return the valueHistory
      */
-    public synchronized TreeMap<String, TreeMap<LocalDateTime, SensorValueSerializable>> getValueHistory() {
+    public synchronized TreeMap<String, TreeMap<LocalDateTime, SensorValue>> getValueHistory() {
         return valueHistory;
+    }
+    
+    public synchronized TreeMap<String, Map<LocalDateTime, SensorValue>> getValueHistoryDescending() {
+        TreeMap outMap = new TreeMap<>();
+        for(Entry entry : this.getValueHistory().entrySet()){
+            TreeMap valuesMap = (TreeMap)entry.getValue();
+            outMap.put(entry.getKey(), valuesMap.descendingMap());
+        }
+        return outMap;
     }
 
     /**
      * @return the lastValues
      */
-    public synchronized TreeMap<String, SensorValueSerializable> getLastValues() {
+    public synchronized TreeMap<String, SensorValue> getLastValues() {
         return lastValues;
     }
 }

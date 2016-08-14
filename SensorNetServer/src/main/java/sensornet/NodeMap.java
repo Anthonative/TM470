@@ -7,6 +7,8 @@ package sensornet;
 
 import java.util.Map;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.TreeMap;
 /**
  *
@@ -16,34 +18,50 @@ public class NodeMap implements Serializable{
     /**
      * @serial 
      */
-    private volatile Map<Integer, NodeSerializable> nodeMap;
-    
+    private volatile Map<Integer, Node> nodeMap;
+    private volatile List<String> instructionList;
     public NodeMap(){
         nodeMap = new TreeMap<>();
+        instructionList = new ArrayList<>();
     }
     
    /**
-    * Returns NodeSerializable the object which has nodeID. If nodeID is unknown, creates new node
-    * and adds to node map.
     * @param nodeID
     * @return 
     */
-    public synchronized NodeSerializable getNode(int nodeID){
-        if(getNodeMap().containsKey(nodeID)){
-            return getNodeMap().get(nodeID);
-        }
-        else{
-            NodeSerializable newNode = new NodeSerializable(nodeID);
-            getNodeMap().put(nodeID, newNode);
-            return getNodeMap().get(nodeID);
-        }
-           
+    public synchronized Node getNode(int nodeID){
+        return getNodeMap().get(nodeID);
+    }
+    
+    /*
+    * Returns true if a node with nodeID is stored in the node map.
+    */
+    public synchronized boolean hasNode(int nodeID){
+        return getNodeMap().containsKey(nodeID);
     }
 
+    /*
+    *Instantiates a new Node with nodeID and adds to node map
+    */
+    public synchronized void addNode(int nodeID){
+        Node newNode = new Node(nodeID);
+        getNodeMap().put(nodeID, newNode);
+    }
     /**
      * @return the nodeMap
      */
-    public synchronized Map<Integer, NodeSerializable> getNodeMap() {
+    public synchronized Map<Integer, Node> getNodeMap() {
         return nodeMap;
+    }
+    
+    public synchronized void addInstruction(String instruction){
+        instructionList.add(instruction);
+    }
+
+    /**
+     * @return the instructionList
+     */
+    public List<String> getInstructionList() {
+        return instructionList;
     }
 }

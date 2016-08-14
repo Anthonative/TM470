@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Node</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    </head>
+    <body>
+      <table>
+        <tr>
+            <th th:text="${node.getName()}" colspan="2">SensorName</th>
+        </tr>
+        <tr>
+            <td><a th:href="@{/nodesettings(nodeID=${node.getNodeID()})}">Settings</a></td>
+        </tr>
+      </table>
+        <table>
+          <thead>
+            <tr><th th:each="sensor: ${node.getValueHistoryDescending()}" th:text="${sensor.key}">Type</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td th:each="sensor : ${node.getValueHistoryDescending()}">    
+                <div style='height: 300px; overflow: scroll;'>
+                <p th:each="row : ${sensor.value}" th:text="${#temporals.format(row.key,'dd/MMM/yyyy HH:mm')}
+                 +' - '+${row.value.getValue()}"></p>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+    </body>
+</html>

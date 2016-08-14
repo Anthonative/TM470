@@ -15,13 +15,13 @@ import java.util.TreeMap;
 public class LastValuesAll
 {
      private final long id;
-     private final Map<String, Map<String, SensorValueSerializable>> values;
+     private final Map<String, Map<String, SensorValue>> values;
      
      public LastValuesAll(long id){
          this.id = id;
-         Map<Integer, NodeSerializable> nodeMap = Application.getNodeMap().getNodeMap();
+         Map<Integer, Node> nodeMap = Application.getNodeMap().getNodeMap();
          values = new TreeMap();
-         for(NodeSerializable node : nodeMap.values()){
+         for(Node node : nodeMap.values()){
              values.put(node.getName(), node.getLastValues());
          }
          
@@ -38,7 +38,7 @@ public class LastValuesAll
     /**
      * @return the values
      */
-    public Map<String, Map<String, SensorValueSerializable>> getValues()
+    public Map<String, Map<String, SensorValue>> getValues()
     {
         return values;
     }
