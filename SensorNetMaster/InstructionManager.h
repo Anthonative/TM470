@@ -14,22 +14,28 @@
 #include<inttypes.h>
 #include<queue>
 #include<map>
+#include<stdlib.h>
+#include<stdio.h>
+#include<iostream>
+#include<fstream>
+using namespace std;
 #ifndef INSTRUCTIONMANAGER_H
 #define INSTRUCTIONMANAGER_H
 
 class InstructionManager {
 public:
-    InstructionManager(char const* fifoPath);
-    InstructionManager(const InstructionManager& orig);
+    InstructionManager(char const* path);
     virtual ~InstructionManager();
     void addNode(uint8_t nodeID);
     void addInstruction(uint8_t nodeID, char const* instruction);
     std::queue<char const*> getInstructions(uint8_t nodeID);
     bool hasInstructions(uint8_t nodeID);
     void readInstructions();
+//    void parseInstructionString(std::string instruction);
 private:
     std::map<uint8_t,std::queue<char const*> > instructionMap;
     char const* fifoPath;
+    ifstream inStream;
 };
 
 #endif /* INSTRUCTIONMANAGER_H */

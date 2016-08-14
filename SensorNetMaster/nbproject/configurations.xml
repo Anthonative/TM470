@@ -5,7 +5,7 @@
                    displayName="Header Files"
                    projectFiles="true">
       <itemPath>InstructionManager.h</itemPath>
-      <itemPath>LocalIO.h</itemPath>
+      <itemPath>LocalOut.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -15,7 +15,7 @@
                    displayName="Source Files"
                    projectFiles="true">
       <itemPath>InstructionManager.cpp</itemPath>
-      <itemPath>LocalIO.cpp</itemPath>
+      <itemPath>LocalOut.cpp</itemPath>
       <itemPath>D:/TM470/rf24libs/RF24Mesh/examples_RPi/dhcplist.txt</itemPath>
       <itemPath>sensornetMain.cpp</itemPath>
     </logicalFolder>
@@ -104,9 +104,9 @@
       </item>
       <item path="InstructionManager.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="LocalIO.cpp" ex="false" tool="1" flavor2="0">
+      <item path="LocalOut.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="LocalIO.h" ex="false" tool="3" flavor2="0">
+      <item path="LocalOut.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="sensornetMain.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -184,9 +184,9 @@
       </item>
       <item path="InstructionManager.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="LocalIO.cpp" ex="false" tool="1" flavor2="0">
+      <item path="LocalOut.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="LocalIO.h" ex="false" tool="3" flavor2="0">
+      <item path="LocalOut.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="sensornetMain.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -274,9 +274,9 @@
       </item>
       <item path="InstructionManager.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="LocalIO.cpp" ex="false" tool="1" flavor2="0">
+      <item path="LocalOut.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="LocalIO.h" ex="false" tool="3" flavor2="0">
+      <item path="LocalOut.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="sensornetMain.cpp" ex="false" tool="1" flavor2="0">
       </item>

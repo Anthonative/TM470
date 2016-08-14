@@ -14,13 +14,13 @@
 #include <string>
 #include <stdlib.h>
 
-#ifndef LOCALIO_H
-#define LOCALIO_H
-class LocalIO {
+#ifndef LOCALOUT_H
+#define LOCALOUT_H
+class LocalOut {
 public:
-    LocalIO();
-    LocalIO(char const* path);
-    virtual ~LocalIO();
+    LocalOut();
+    LocalOut(char const* path);
+    virtual ~LocalOut();
     void stringOut(char* output[]);
 private:
     char const* fifoPath;

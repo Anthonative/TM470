@@ -36,7 +36,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 # Object Files
 OBJECTFILES= \
 	${OBJECTDIR}/InstructionManager.o \
-	${OBJECTDIR}/LocalIO.o \
+	${OBJECTDIR}/LocalOut.o \
 	${OBJECTDIR}/sensornetMain.o
 
 
@@ -69,10 +69,10 @@ ${OBJECTDIR}/InstructionManager.o: InstructionManager.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/InstructionManager.o InstructionManager.cpp
 
-${OBJECTDIR}/LocalIO.o: LocalIO.cpp 
+${OBJECTDIR}/LocalOut.o: LocalOut.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/LocalIO.o LocalIO.cpp
+	$(COMPILE.cc) -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/LocalOut.o LocalOut.cpp
 
 ${OBJECTDIR}/sensornetMain.o: sensornetMain.cpp 
 	${MKDIR} -p ${OBJECTDIR}

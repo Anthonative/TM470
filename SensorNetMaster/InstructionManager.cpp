@@ -17,17 +17,17 @@
 #include <stdint.h> 
 #include <iostream>
 #include <fstream>
-#include<map>
+#include <map>
 #include<queue>
+#include <iosfwd>
 using namespace std;
 
 InstructionManager::InstructionManager(char const* path) {
     instructionMap = std::map<uint8_t,std::queue<char const*> >();
     fifoPath = path;
+    
 }
 
-InstructionManager::InstructionManager(const InstructionManager& orig) {
-}
 
 InstructionManager::~InstructionManager() {
 }
@@ -54,14 +54,20 @@ bool InstructionManager::hasInstructions(uint8_t nodeID){
 }
 
 void InstructionManager::readInstructions(){
-    ifstream inStream;
-    string line;
+    string instruction;
+    //printf("Opening inFIFO\n");
     inStream.open(fifoPath);
-    if(!inStream.is_open()){
-        printf("ERROR: Could not open instruction FIFO\n");
-        exit(EXIT_FAILURE);
+    if(inStream.is_open()){
+    while(getline(inStream,instruction)){
+        printf("instructionloop\n");
+        if(instruction == "END")break;
+        printf("Instruction: %s\n", instruction.c_str());
     }
-    while( getline(inStream,line)){
-        printf("Received instruction string: %s\n", line.c_str());
+    inStream.close();
+    //printf("Finished instructions\n");
     }
 }
+
+/*void InstructionManager::parseIntructionString(std::string instruction){
+    
+}*/
