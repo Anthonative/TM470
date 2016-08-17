@@ -41,33 +41,28 @@ public class SensorNetThread implements Runnable{
     @Override
     public void run() {
         BufferedReader in;
-        System.out.println("Opening FIFOs");
         try{
+            System.out.println("Opening inFIFO");
             in = new BufferedReader(new FileReader(INFIFO_PATH));
             System.out.println("Open");
             
             while(true){
                 if(in.ready()){
-                    try{
-                        readValues(in);
-                    }
-                    catch(Exception e){
-                        e.printStackTrace();
-                    }
+                    readValues(in);
                     saveNodeMap();
                 }
                 sendInstructions();
             }
         }
-        catch(IOException e){
-            System.out.println("ERROR: Could not open input FIFO" + e);
+        catch(Exception e){
+            System.out.println("ERROR: ");
+            e.printStackTrace();
             System.exit(-1);
         }
         
     }
     
     private void readValues(BufferedReader in) throws Exception{
-        try{
             while(in.ready()){
               System.out.println("Reading next value");
               String valueString = in.readLine();
@@ -88,14 +83,10 @@ public class SensorNetThread implements Runnable{
               System.out.println(LocalDateTime.now());
              // printLastValues();
          }
-        }
-        catch(IOException e){
-            System.out.println("A thing went wrong");
-        }
     }
     
     private void sendInstructions() throws IOException{
-        //System.out.println("Send Instructions");
+       // System.out.println("Send Instructions");
         try (BufferedOutputStream instructionsOut = new BufferedOutputStream(new FileOutputStream(INSTRUCTIONS_PATH))) {
             List<String> insructionList = nodeMap.getInstructionList();
             PrintWriter printWriter = new PrintWriter(instructionsOut);
@@ -104,6 +95,7 @@ public class SensorNetThread implements Runnable{
             }
             printWriter.println("END");
             instructionsOut.flush();
+            instructionsOut.close();
         }
     }
     
