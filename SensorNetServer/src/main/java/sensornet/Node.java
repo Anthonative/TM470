@@ -91,11 +91,11 @@ public class Node implements Serializable{
         return valueHistory;
     }
     
-    public TreeMap<String, Map<LocalDateTime, SensorValue>> getValueHistoryDescending() {
+    public synchronized TreeMap<String, Map<LocalDateTime, SensorValue>> getValueHistoryDescending() {
         TreeMap outMap = new TreeMap<>();
-        synchronized (this){
-            for(Entry entry : this.getValueHistory().entrySet()){
-                TreeMap valuesMap = (TreeMap)entry.getValue();
+        for(Entry entry : this.getValueHistory().entrySet()){
+            TreeMap valuesMap = (TreeMap)entry.getValue();
+            synchronized(valuesMap){
                 outMap.put(entry.getKey(), valuesMap.descendingMap());
             }
         }
