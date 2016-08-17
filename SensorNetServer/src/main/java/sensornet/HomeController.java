@@ -28,6 +28,7 @@ public class HomeController {
             model.addAttribute("node", Application.getNodeMap().getNode(nodeID));
             return "nodesettings"; 
         }
+        
         @RequestMapping("/setupdatefrequency")
         public void setNodeUpdateFrequency(@RequestParam(value="nodeID", required=true) int nodeID, 
                 @RequestParam(value="frequency", required=true) int frequency, Model model){

@@ -9,7 +9,7 @@ import java.util.Map;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.TreeMap;
+import java.util.concurrent.ConcurrentSkipListMap;
 /**
  *
  * @author antho_000
@@ -21,7 +21,7 @@ public class NodeMap implements Serializable{
     private volatile Map<Integer, Node> nodeMap;
     private volatile List<String> instructionList;
     public NodeMap(){
-        nodeMap = new TreeMap<>();
+        nodeMap = new ConcurrentSkipListMap<>();
         instructionList = new ArrayList<>();
     }
     

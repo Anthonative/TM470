@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.TreeMap;
+import java.util.concurrent.ConcurrentSkipListMap;
 
 /**
  *
@@ -27,17 +27,17 @@ public class Node implements Serializable{
     /**
      * @serial 
      */
-    private volatile TreeMap<String, TreeMap<LocalDateTime, SensorValue>> valueHistory;
+    private volatile ConcurrentSkipListMap<String, ConcurrentSkipListMap<LocalDateTime, SensorValue>> valueHistory;
     /**
      * @serial 
      */
-    private volatile TreeMap<String, SensorValue> lastValues;
+    private volatile ConcurrentSkipListMap<String, SensorValue> lastValues;
         
      Node(int nodeID){
         this.nodeID = nodeID;
         this.name = String.valueOf(nodeID);
-        this.lastValues = new TreeMap();
-        this.valueHistory = new TreeMap();
+        this.lastValues = new ConcurrentSkipListMap();
+        this.valueHistory = new ConcurrentSkipListMap();
     }
     /**
      * Sets last value to input value. Moves old last value to value history
@@ -57,7 +57,7 @@ public class Node implements Serializable{
         SensorValue newValue = new SensorValue(time,type,value);
         if(getLastValues().containsKey(type)){
             if(!valueHistory.containsKey(type)){
-                getValueHistory().put(type, new TreeMap());
+                getValueHistory().put(type, new ConcurrentSkipListMap());
             }
             getValueHistory().get(type).put(time, newValue);
         }
@@ -87,14 +87,14 @@ public class Node implements Serializable{
     /**
      * @return the valueHistory
      */
-    public synchronized TreeMap<String, TreeMap<LocalDateTime, SensorValue>> getValueHistory() {
+    public synchronized ConcurrentSkipListMap<String, ConcurrentSkipListMap<LocalDateTime, SensorValue>> getValueHistory() {
         return valueHistory;
     }
     
-    public synchronized TreeMap<String, Map<LocalDateTime, SensorValue>> getValueHistoryDescending() {
-        TreeMap outMap = new TreeMap<>();
+    public synchronized ConcurrentSkipListMap<String, Map<LocalDateTime, SensorValue>> getValueHistoryDescending() {
+        ConcurrentSkipListMap outMap = new ConcurrentSkipListMap<>();
         for(Entry entry : this.getValueHistory().entrySet()){
-            TreeMap valuesMap = (TreeMap)entry.getValue();
+            ConcurrentSkipListMap valuesMap = (ConcurrentSkipListMap)entry.getValue();
             synchronized(valuesMap){
                 outMap.put(entry.getKey(), valuesMap.descendingMap());
             }
@@ -105,7 +105,7 @@ public class Node implements Serializable{
     /**
      * @return the lastValues
      */
-    public synchronized TreeMap<String, SensorValue> getLastValues() {
+    public synchronized ConcurrentSkipListMap<String, SensorValue> getLastValues() {
         return lastValues;
     }
 }
