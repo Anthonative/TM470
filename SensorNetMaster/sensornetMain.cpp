@@ -34,21 +34,19 @@ int main(int argc, char** argv) {
   radio.setPALevel(RF24_PA_MAX);
   radio.setDataRate(RF24_250KBPS);
   radio.printDetails();
-  
+ 
   valuesOut = LocalOut(VALUESOUT);
 
 while(1)
 {
+
   // Call network.update as usual to keep the network updated
   mesh.update();
-
   // In addition, keep the 'DHCP service' running on the master node so addresses will
   // be assigned to the sensor nodes
   mesh.DHCP();
-  
   // Check for incoming data from the sensors
   while(network.available()){
-
     RF24NetworkHeader header;
     network.peek(header);
     

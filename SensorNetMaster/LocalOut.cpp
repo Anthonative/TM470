@@ -22,7 +22,8 @@ LocalOut::LocalOut() {
 
 LocalOut::LocalOut(char const* path){
     fifoPath = path;
-    
+    printf("Opening outFIFO\n");
+    outFIFO = fopen (fifoPath,"w");
 }
 
 
@@ -31,8 +32,8 @@ LocalOut::~LocalOut(){
 }
 
 void LocalOut::stringOut(char* output[]){
-    printf("Opening outFIFO\n");
-    outFIFO = fopen (fifoPath,"w");
+ // printf("Opening outFIFO\n");
+  outFIFO = fopen (fifoPath,"w"); 
     if(outFIFO == NULL){
       printf("ERROR: Could not open output FIFO\n");
       exit(EXIT_FAILURE);
