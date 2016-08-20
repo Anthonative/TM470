@@ -47,6 +47,10 @@ public class NodeMap implements Serializable{
         Node newNode = new Node(nodeID);
         getNodeMap().put(nodeID, newNode);
     }
+    
+    public synchronized void removeNode(int nodeID){
+        getNodeMap().remove(nodeID);
+    }
     /**
      * @return the nodeMap
      */

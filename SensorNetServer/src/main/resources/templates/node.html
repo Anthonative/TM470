@@ -20,16 +20,16 @@ and open the template in the editor.
       </table>
         <table>
           <thead>
-            <tr><th th:each="sensor: ${node.getValueHistoryDescending()}" th:text="${sensor.key}">Type</th></tr>
+            <tr><th th:each="entry: ${valueHistory}" th:text="${entry.key}">Type</th></tr>
           </thead>
           <tbody>
             <tr>
-              <td th:each="sensor : ${node.getValueHistoryDescending()}">    
+              <td th:each="entry : ${valueHistory}">    
                 <div style='height: 300px; overflow: scroll;'>
-                <p th:each="row : ${sensor.value}" th:text="${#temporals.format(row.key,'dd/MMM/yyyy HH:mm')}
-                 +' - '+${row.value.getValue()}"></p>
+                <p th:each="sensorValue : ${entry.value.values()}" 
+                   th:text="${sensorValue.toString()}"></p>
                 </div>
-              </td>
+             </td>
             </tr>
           </tbody>
         </table>

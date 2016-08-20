@@ -51,4 +51,10 @@ public class SensorValue implements Serializable{
         return value;
     }
     
+    public String toString(){
+        String out = time.getDayOfMonth() + "/" + time.getMonthValue() + "/" +
+                time.getYear() + "-" + time.getHour() + ":" + time.getMinute() +
+                " - " + value;
+        return out;
+    }
 }

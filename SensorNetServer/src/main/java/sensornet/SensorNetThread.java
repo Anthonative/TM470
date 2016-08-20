@@ -15,7 +15,6 @@ import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicLong;
 import static sensornet.Application.NODE_MAP_PATH;
 import static sensornet.Application.INFIFO_PATH;
 import static sensornet.Application.INSTRUCTIONS_PATH;
@@ -31,10 +30,16 @@ public class SensorNetThread implements Runnable{
      */
     
     private NodeMap nodeMap;
-    private final AtomicLong counter = new AtomicLong();
     
     public SensorNetThread(NodeMap nodeMap){
         this.nodeMap = nodeMap;
+        //test    
+            nodeMap.removeNode(100);
+            nodeMap.addNode(100);
+            for(int i=0; i<10000; i++){
+                nodeMap.getNode(100).addValue(LocalDateTime.now().plusMinutes(i), "Test", i);
+            }
+        
         saveNodeMap();
     }
             
@@ -90,8 +95,9 @@ public class SensorNetThread implements Runnable{
         try (BufferedOutputStream instructionsOut = new BufferedOutputStream(new FileOutputStream(INSTRUCTIONS_PATH))) {
             List<String> insructionList = nodeMap.getInstructionList();
             PrintWriter printWriter = new PrintWriter(instructionsOut);
-            for(String intruction : insructionList){
-                printWriter.println(intruction);
+            for(String instruction : insructionList){
+                printWriter.println(instruction);
+                System.out.println(instruction);
             }
             printWriter.println("END");
             instructionsOut.flush();

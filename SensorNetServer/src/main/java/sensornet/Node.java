@@ -7,6 +7,7 @@ package sensornet;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentSkipListMap;
@@ -32,8 +33,9 @@ public class Node implements Serializable{
      * @serial 
      */
     private volatile ConcurrentSkipListMap<String, SensorValue> lastValues;
-        
-     Node(int nodeID){
+    
+    
+    Node(int nodeID){
         this.nodeID = nodeID;
         this.name = String.valueOf(nodeID);
         this.lastValues = new ConcurrentSkipListMap();
@@ -53,11 +55,13 @@ public class Node implements Serializable{
      * @param value
      * @throws Exception
      */
-    public synchronized void addValue(LocalDateTime time, String type, double value) throws Exception{
+    public synchronized void addValue(LocalDateTime time, String type, double value){
         SensorValue newValue = new SensorValue(time,type,value);
         if(getLastValues().containsKey(type)){
             if(!valueHistory.containsKey(type)){
-                getValueHistory().put(type, new ConcurrentSkipListMap());
+                getValueHistory().put(
+                        type, new ConcurrentSkipListMap<>(
+                                (Comparator<LocalDateTime> & Serializable)(LocalDateTime a, LocalDateTime b) -> -a.compareTo(b)));
             }
             getValueHistory().get(type).put(time, newValue);
         }
@@ -91,16 +95,7 @@ public class Node implements Serializable{
         return valueHistory;
     }
     
-    public synchronized ConcurrentSkipListMap<String, Map<LocalDateTime, SensorValue>> getValueHistoryDescending() {
-        ConcurrentSkipListMap outMap = new ConcurrentSkipListMap<>();
-        for(Entry entry : this.getValueHistory().entrySet()){
-            ConcurrentSkipListMap valuesMap = (ConcurrentSkipListMap)entry.getValue();
-            synchronized(valuesMap){
-                outMap.put(entry.getKey(), valuesMap.descendingMap());
-            }
-        }
-        return outMap;
-    }
+ 
 
     /**
      * @return the lastValues

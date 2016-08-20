@@ -11,8 +11,18 @@ and open the template in the editor.
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </head>
     <body>
-        <div><p>Name:<input name="name" type="text" th:field="*{node.name}"></input><button type="submit" >Set</button></p>
-            New update frequency:<input type="text" ></input>
+        <div><form action="#" th:action="@{/setnodename}" method="post">
+                <p> <input name="nodeID" type="hidden" th:field="*{node.nodeID}"></input>
+                    Name:<input name="name" type="text" th:field="*{node.name}"></input>
+                    <button type="submit">Set</button>
+             </p>
+            </form>
+            <form action="#" th:action="@{/setupdatefrequency}" method="post">
+                <input type="hidden" name="nodeID" th:field="*{node.nodeID}"></input>
+                New update frequency:<input type="text" name="frequency"></input>
+            <button type="submit">Set</button>
+            </form>
+            
         </div>
     </body>
 </html>
