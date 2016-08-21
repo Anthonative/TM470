@@ -46,11 +46,11 @@ public class SensorNetThread implements Runnable{
     @Override
     public void run() {
         BufferedReader in;
+        BufferedOutputStream out;
         try{
             System.out.println("Opening inFIFO");
             in = new BufferedReader(new FileReader(INFIFO_PATH));
             System.out.println("Open");
-            
             while(true){
                 if(in.ready()){
                     readValues(in);
@@ -91,18 +91,16 @@ public class SensorNetThread implements Runnable{
     }
     
     private void sendInstructions() throws IOException{
-       // System.out.println("Send Instructions");
-        try (BufferedOutputStream instructionsOut = new BufferedOutputStream(new FileOutputStream(INSTRUCTIONS_PATH))) {
+            BufferedOutputStream instructionsOut = new BufferedOutputStream(new FileOutputStream(INSTRUCTIONS_PATH));
             List<String> insructionList = nodeMap.getInstructionList();
             PrintWriter printWriter = new PrintWriter(instructionsOut);
             for(String instruction : insructionList){
                 printWriter.println(instruction);
                 System.out.println(instruction);
             }
+            nodeMap.getInstructionList().clear();
             printWriter.println("END");
-            instructionsOut.flush();
-            instructionsOut.close();
-        }
+            printWriter.close();
     }
     
     

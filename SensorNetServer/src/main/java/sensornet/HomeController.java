@@ -80,6 +80,7 @@ public class HomeController {
         public String setNodeUpdateFrequency(@RequestParam(value="nodeID", required=true) int nodeID, 
                 @RequestParam(value="frequency", required=true) int frequency, Model model){
             String instruction = nodeID + ";U;" + frequency;
+            
             Application.getNodeMap().addInstruction(instruction);
             System.out.println(frequency);
             model.addAttribute(Application.getNodeMap().getNode(nodeID));
