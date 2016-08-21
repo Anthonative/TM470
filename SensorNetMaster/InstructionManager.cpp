@@ -20,12 +20,14 @@
 #include <map>
 #include<queue>
 #include <iosfwd>
+#include <boost/algorithm/string.hpp>
 using namespace std;
 
 InstructionManager::InstructionManager(char const* path) {
     instructionMap = std::map<uint8_t,std::queue<char const*> >();
     fifoPath = path;
-    
+    printf("Opening inFIFO\n");
+    inStream.open(fifoPath, ifstream::in);
 }
 
 
@@ -55,17 +57,14 @@ bool InstructionManager::hasInstructions(uint8_t nodeID){
 
 void InstructionManager::readInstructions(){
     string instruction;
-    //printf("Opening inFIFO\n");
     inStream.open(fifoPath);
-    if(inStream.is_open()){
-    while(getline(inStream,instruction)){
+    while(std::getline(inStream,instruction)){
         printf("instructionloop\n");
-        if(instruction == "END")break;
         printf("Instruction: %s\n", instruction.c_str());
+        if(instruction == "END")break;
     }
     inStream.close();
-    //printf("Finished instructions\n");
-    }
+    printf("Finished instructions\n");
 }
 
 /*void InstructionManager::parseIntructionString(std::string instruction){

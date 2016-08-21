@@ -13,7 +13,7 @@
 #define VALUESOUT "/etc/sensornet/sensorvalues"
 #define INSTRUCTIONSIN "/etc/sensornet/instructions"
 
-LocalOut valuesOut;
+LocalOut valuesOut(VALUESOUT);
 InstructionManager instructionManager(INSTRUCTIONSIN);
 
 RF24 radio(RPI_V2_GPIO_P1_15, BCM2835_SPI_CS0, BCM2835_SPI_SPEED_8MHZ);  
@@ -35,7 +35,6 @@ int main(int argc, char** argv) {
   radio.setDataRate(RF24_250KBPS);
   radio.printDetails();
  
-  valuesOut = LocalOut(VALUESOUT);
 
 while(1)
 {
