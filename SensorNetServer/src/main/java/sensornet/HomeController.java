@@ -25,10 +25,7 @@ public class HomeController {
         @RequestMapping("/node")
         public String node(@RequestParam(value="nodeID", required=true) int nodeID, Model model){
             Node node = Application.getNodeMap().getNode(nodeID);
-            NodeBean nodeBean = new NodeBean();
-            nodeBean.setNodeID(nodeID);
-            nodeBean.setName(node.getName());
-            model.addAttribute("node", nodeBean);
+            model.addAttribute("node", node);
             ConcurrentSkipListMap<String, ConcurrentSkipListMap<LocalDateTime, SensorValue>> valueHistory =
                     Application.getNodeMap().getNode(nodeID).getValueHistory();
             ConcurrentSkipListMap<String, ConcurrentSkipListMap<LocalDateTime, SensorValue>> valueHistoryShort =
