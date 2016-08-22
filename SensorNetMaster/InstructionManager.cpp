@@ -12,19 +12,19 @@
  */
 
 #include "InstructionManager.h"
+#include "Instruction.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdint.h> 
 #include <iostream>
 #include <fstream>
 #include <map>
-#include<queue>
+#include <queue>
 #include <iosfwd>
-#include <boost/algorithm/string.hpp>
+#include <sstream>
 using namespace std;
 
 InstructionManager::InstructionManager(char const* path) {
-    instructionMap = std::map<uint8_t,std::queue<char const*> >();
     fifoPath = path;
     printf("Opening inFIFO\n");
     inStream.open(fifoPath, ifstream::in);
@@ -34,24 +34,27 @@ InstructionManager::InstructionManager(char const* path) {
 InstructionManager::~InstructionManager() {
 }
 
-void InstructionManager::addNode(uint8_t nodeID){
-    std::queue<char const*> queue = std::queue<char const*>();
-    instructionMap[nodeID] = queue;
+void InstructionManager::addNode(string nodeID){
+    std::queue<Instruction*> queue;
+    instructionMap.insert(std::pair<std::string,std::queue<Instruction*> >(nodeID,queue));
 }
 
-void InstructionManager::addInstruction(uint8_t nodeID, char const* instruction){
+void InstructionManager::addInstruction(string nodeID, Instruction* instruction){
     if(instructionMap.count(nodeID) < 1){
         addNode(nodeID);
     }
-    instructionMap[nodeID].push(instruction);
+    instructionMap.at(nodeID).push(instruction);
 }
 
-std::queue<char const*> InstructionManager::getInstructions(uint8_t nodeID){
-    return instructionMap[nodeID];
+std::queue<Instruction*>* InstructionManager::getInstructions(string nodeID){
+    printf("get instructions\n");
+    return &instructionMap.at(nodeID);
 }
 
-bool InstructionManager::hasInstructions(uint8_t nodeID){
+bool InstructionManager::hasInstructions(string nodeID){
+    printf("has instructions?\n");
     if(instructionMap.count(nodeID) < 1) return false;
+    printf("size=%i\n",instructionMap[nodeID].size());
     return(instructionMap[nodeID].size() > 0);
 }
 
@@ -59,14 +62,34 @@ void InstructionManager::readInstructions(){
     string instruction;
     inStream.open(fifoPath);
     while(std::getline(inStream,instruction)){
-        printf("instructionloop\n");
-        printf("Instruction: %s\n", instruction.c_str());
+        //printf("instructionloop\n");
         if(instruction == "END")break;
+        printf("Instruction: %s\n", instruction.c_str());
+        parseInstructionString(instruction);
     }
     inStream.close();
-    printf("Finished instructions\n");
+    //printf("Finished instructions\n");
 }
 
-/*void InstructionManager::parseIntructionString(std::string instruction){
-    
-}*/
+void InstructionManager::parseInstructionString(std::string instructionString){
+    printf("parsing...\n");
+    stringstream ss(instructionString);
+    string token;
+    vector<string> tokens;
+    while(getline(ss, token, ';')){
+        tokens.push_back(token);
+        printf("%s\n",token.c_str());
+    }
+    if(tokens.size()==3){
+        string nodeID;
+        nodeID = tokens.at(0);
+        string type = tokens.at(1);
+        string data = tokens.at(2);
+        Instruction *instruction = new Instruction(type, data);
+        printf("%s\n", instruction->GetData().c_str());
+        addInstruction(nodeID,instruction);
+        printf("added instruction\n");
+        printf("%s\n",getInstructions(nodeID)->front()->GetData().c_str());
+    }
+            
+}

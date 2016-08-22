@@ -35,6 +35,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/Instruction.o \
 	${OBJECTDIR}/InstructionManager.o \
 	${OBJECTDIR}/LocalOut.o \
 	${OBJECTDIR}/sensornetMain.o
@@ -63,6 +64,11 @@ LDLIBSOPTIONS=-Wl,-rpath,. -lrf24-bcm -lrf24network -lrf24mesh -lncurses
 ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/sensornetmaster: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/sensornetmaster ${OBJECTFILES} ${LDLIBSOPTIONS}
+
+${OBJECTDIR}/Instruction.o: Instruction.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -I. -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Instruction.o Instruction.cpp
 
 ${OBJECTDIR}/InstructionManager.o: InstructionManager.cpp 
 	${MKDIR} -p ${OBJECTDIR}

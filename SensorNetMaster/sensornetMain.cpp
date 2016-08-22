@@ -9,6 +9,8 @@
 #include "LocalOut.h"
 #include "InstructionManager.h"
 #include <sstream>
+#include <string>
+#include "Instruction.h"
 
 #define VALUESOUT "/etc/sensornet/sensorvalues"
 #define INSTRUCTIONSIN "/etc/sensornet/instructions"
@@ -90,9 +92,11 @@ return 0;
 /**For now just sends empty instruction message to node. In future will check if
 there are any instructions waiting to be sent and forward them**/
 bool sendNodeInstructions(int16_t nodeID){
-    if(!instructionManager.hasInstructions(nodeID)){
-        int i = 10;
-        bool sent = 0;
+    stringstream ss;
+    ss << nodeID;
+    bool sent = 0;
+    if(!instructionManager.hasInstructions(ss.str())){
+        int i = 100;
         while(i > 0){
             if(mesh.write(0,'I',0,nodeID)){
               i = 0;
@@ -103,6 +107,28 @@ bool sendNodeInstructions(int16_t nodeID){
         }
       return sent;
     }
+    std::queue<Instruction*>* instructions = instructionManager.getInstructions(ss.str());
+    printf("got instructions, size:%i\n",instructions->size());
+    
+    printf("%s\n",instructions->front()->GetData().c_str());
+    int i = 100;
+    while(!instructions->empty() && i > 0){
+        Instruction* instruction = instructions->front();
+        printf("type:%s",instruction->GetType().c_str());
+        printf("data:%s",instruction->GetData().c_str());
+        char type = instruction->GetType().c_str()[0];
+        string data = instruction->GetData();
+        printf("Attempting to send instruction%c;%s\n",type,data.c_str());
+            if(mesh.write(data.c_str(),type,sizeof(data.c_str()),nodeID)){
+              instructions->pop();
+              sent = 1;
+              i=0;
+              printf("Sent instruction %i;%s\n", nodeID,data.c_str());
+            }
+        i--;
+        delay(2);
+    }
+    return sent;
 }      
       
       

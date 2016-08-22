@@ -10,7 +10,6 @@
  *
  * Created on 13 August 2016, 12:19
  */
-#include<list>
 #include<inttypes.h>
 #include<queue>
 #include<map>
@@ -18,6 +17,7 @@
 #include<stdio.h>
 #include<iostream>
 #include<fstream>
+#include<Instruction.h>
 using namespace std;
 #ifndef INSTRUCTIONMANAGER_H
 #define INSTRUCTIONMANAGER_H
@@ -26,14 +26,14 @@ class InstructionManager {
 public:
     InstructionManager(char const* path);
     virtual ~InstructionManager();
-    void addNode(uint8_t nodeID);
-    void addInstruction(uint8_t nodeID, char const* instruction);
-    std::queue<char const*> getInstructions(uint8_t nodeID);
-    bool hasInstructions(uint8_t nodeID);
+    void addNode(string nodeID);
+    void addInstruction(string nodeID, Instruction* instruction);
+    std::queue<Instruction*>* getInstructions(string nodeID);
+    bool hasInstructions(string nodeID);
     void readInstructions();
-//    void parseInstructionString(std::string instruction);
+    void parseInstructionString(std::string instructionString);
 private:
-    std::map<uint8_t,std::queue<char const*> > instructionMap;
+    std::map<std::string,std::queue<Instruction*> > instructionMap;
     char const* fifoPath;
     ifstream inStream;
 };
