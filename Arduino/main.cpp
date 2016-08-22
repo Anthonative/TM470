@@ -12,6 +12,7 @@
 #include <EEPROM.h>
 #include <stdlib.h>
 #include <Timer.h>
+
 // imports the Serial class to allow log output
 extern HardwareSerial Serial;
 
@@ -19,6 +20,8 @@ extern HardwareSerial Serial;
 RF24 radio(7, 8);
 RF24Network network(radio);
 RF24Mesh mesh(radio, network);
+#define NODE_ID 5
+
 //DHT
 DHT dht(5, DHT22);
 //Timer
@@ -26,8 +29,11 @@ Timer timer;
 //Funcs
 void send();
 void receive();
+void sendValueString(String);
+void setUpdatePeriod(int);
 //Attributes
-long updatePeriod = 5000;
+int updatePeriod = 5000;
+int updateEvent;
         
 struct payload_t {
   unsigned long ms;
@@ -37,7 +43,7 @@ struct payload_t {
 void setup() {
   //Serial begin
   Serial.begin(115200);
-  mesh.setNodeID(10);
+  mesh.setNodeID(NODE_ID);
   //Set NodeID from serial
   while (!mesh.getNodeID()) {
     // Wait for the nodeID to be set via Serial
@@ -51,7 +57,7 @@ void setup() {
   //DHT begin
   dht.begin();
   //set timer to trigger update event
-  int updateEvent = timer.every(updatePeriod, send);
+  updateEvent = timer.every(updatePeriod, send);
   // Connect to the mesh
   Serial.println(F("Connecting to the mesh..."));
   mesh.begin();
@@ -67,36 +73,23 @@ void loop() {
 }
 
 void send(){
-    //get temp and humidity
-    float temp = dht.readTemperature();
-    
-    float hum = dht.readHumidity();
+    //send temp and humidity
+    float temperature = dht.readTemperature();
+    char temp[10];
+    dtostrf(temperature,3,2,temp);
+    String temperatureString = String(mesh.getNodeID()) + ";Temperature;";
+    temperatureString = temperatureString + temp;
+    sendValueString(temperatureString);
 
+    float humidity = dht.readHumidity();
+    char hum[10];
+    dtostrf(humidity,3,2,hum);
+    String humidityString = String(mesh.getNodeID()) + ";Humidity;";
+    humidityString = humidityString + hum;
+    sendValueString(humidityString);
     //power up radio, update mesh
     radio.powerUp();
     mesh.update();
-    //Send temperature
-    Serial.print("Sending temp: "); Serial.println(temp);
-    if(!mesh.write(&temp, 'T', sizeof(temp))){
-        if ( ! mesh.checkConnection() ) {
-        //refresh the network address
-        Serial.println("Renewing Address");
-        mesh.renewAddress();
-      } else {
-        Serial.println("Send fail, Test OK");
-      }
-    };
-    //Send humidity    
-    Serial.println("Sending humidity: "); Serial.println(hum);
-    if(!mesh.write(&hum, 'H', sizeof(hum))){
-        if ( ! mesh.checkConnection() ) {
-        //refresh the network address
-        Serial.println("Renewing Address");
-        mesh.renewAddress();
-      } else {
-        Serial.println("Send fail, Test OK");
-      }
-    };
     //Request instructions
     Serial.println("Requesting instructions");
     if(!mesh.write(0, 'I', 1)){
@@ -110,33 +103,65 @@ void send(){
     } else receive();
     
 }
+
+void sendValueString(String out){
+    radio.powerUp();
+    char outChar[out.length() + 1];
+    out.toCharArray(outChar, out.length() + 1);
+    Serial.print("Sending: "); Serial.println(outChar);
+    if(!mesh.write(outChar, 'V', sizeof(outChar))){
+        if ( ! mesh.checkConnection() ) {
+        //refresh the network address
+        Serial.println("Renewing Address");
+        mesh.renewAddress();
+      } else {
+        Serial.println("Send fail, Test OK");
+      }
+    };
+    radio.powerDown();
+}
+
 //Receive instructions from master.
 void receive(){
-    int i = 10;
+    int i = 100;
     bool received = 0;
+    radio.powerUp();
     while(!received && i > 0){
-        delay(2);
-        radio.powerUp();
         if(network.available()){
             RF24NetworkHeader header;
             network.peek(header);
-        
+            int8_t len = radio.getDynamicPayloadSize();
             switch(header.type){
-             case 'I': network.read(header,0,0);
-                  Serial.println("Message received, no instructions");
-                  break; 
-            }
+             case 'I':{ 
+                        network.read(header,0,0);
+                        Serial.println("Message received, no instructions");
+                        break; 
+                      }
+             case 'U':{
+                        char value[len];
+                        network.read(header,&value,sizeof(value));
+                        String inString(value);
+                        Serial.println("Received: " + inString);
+                        int period = inString.toInt();
+                        Serial.println(period);
+                        setUpdatePeriod(period);
+                        Serial.println("Update frequency changed to " + period);
+                        break;
+                      }
+             }
             i = 0;
             received = 1;
         }
-        radio.powerDown();
         --i;
+        delay(2);
     }
     if(!received) Serial.println("No instructions received");
     radio.powerDown();
 }
-void setUpdatePeriod(long a){
+void setUpdatePeriod(int a){
     updatePeriod = a;
+    timer.stop(updateEvent);
+    updateEvent = timer.every(updatePeriod, send);
 }
 
 
