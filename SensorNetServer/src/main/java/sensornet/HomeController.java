@@ -67,6 +67,7 @@ public class HomeController {
                 @RequestParam(value="name", required=true) String name, Model model){
             Node node = Application.getNodeMap().getNode(nodeID);
             node.setName(name);
+            Application.getNodeMap().save();
             model.addAttribute("node", node);    
             return "nodesettings";
         }

@@ -9,8 +9,18 @@ and open the template in the editor.
         <title th:text="${node.name}"></title>
         <meta charset="UTF-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <link href="../static/css/styles.css" th:href="@{css/styles.css}" rel="stylesheet"/>
     </head>
     <body>
+        <table>
+        <tr>
+            <th th:inline="text" colspan="2">[[${node.getName()}]] Settings</th>
+        </tr>
+        <tr>
+            <td><a href="/">Home</a></td>
+            <td><a th:href="@{/node(nodeID=${node.getNodeID()})}">Values</a></td>
+        </tr>
+      </table>
         <div><form action="#" th:action="@{/setnodename}" method="post">
                 <p> <input name="nodeID" type="hidden" th:field="*{node.nodeID}"></input>
                     Name:<input name="name" type="text" th:field="*{node.name}"></input>

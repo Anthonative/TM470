@@ -5,11 +5,15 @@
  */
 package sensornet;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.Map;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentSkipListMap;
+import static sensornet.Application.NODE_MAP_PATH;
 /**
  *
  * @author antho_000
@@ -67,5 +71,19 @@ public class NodeMap implements Serializable{
      */
     public List<String> getInstructionList() {
         return instructionList;
+    }
+    
+    public synchronized void save(){
+            try{
+                    FileOutputStream fileOut = new FileOutputStream(NODE_MAP_PATH);
+                    ObjectOutputStream nodeMapOut = new ObjectOutputStream(fileOut);
+                    nodeMapOut.writeObject(this);
+                    nodeMapOut.close();
+                    fileOut.close();
+                    System.out.println("Node map saved.");
+                }
+            catch(IOException e){
+                    e.printStackTrace();
+                }
     }
 }

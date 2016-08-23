@@ -3,6 +3,7 @@
 <head>
     <title>Sensor Network</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link href="../static/css/styles.css" th:href="@{css/styles.css}" rel="stylesheet"/>
 </head>
 <body>
 <table style="width:80%">
@@ -17,13 +18,13 @@
   <tbody>
     <tr th:each="node : ${nodelist}">
         <td th:rowspan="${node.getLastValues().size() + 1}"><a th:href="@{/node(nodeID=${node.getNodeID()})}" th:text="${node.getName()}"></a></td>
-           <td>
+           
            <tr th:each="sensormap : ${node.getLastValues()}">
            <td th:text="${sensormap.key}">Type</td>
            <td th:text="${#temporals.format(sensormap.value.getTime(),'dd/MMM/yyyy HH:mm')}">Time</td>
            <td th:text="${sensormap.value.getValue()}">Value</td>
            </tr>
-           </td>
+           
     </tr>
   </tbody>
   </table>

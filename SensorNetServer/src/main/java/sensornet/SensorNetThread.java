@@ -40,7 +40,7 @@ public class SensorNetThread implements Runnable{
                 nodeMap.getNode(100).addValue(LocalDateTime.now().plusMinutes(i), "Test", i);
             }
         
-        saveNodeMap();
+        nodeMap.save();
     }
             
     @Override
@@ -54,7 +54,7 @@ public class SensorNetThread implements Runnable{
             while(true){
                 if(in.ready()){
                     readValues(in);
-                    saveNodeMap();
+                    nodeMap.save();
                 }
                 sendInstructions();
             }
@@ -105,19 +105,7 @@ public class SensorNetThread implements Runnable{
     
     
     
-    private void saveNodeMap(){
-        try{
-                FileOutputStream fileOut = new FileOutputStream(NODE_MAP_PATH);
-                ObjectOutputStream nodeMapOut = new ObjectOutputStream(fileOut);
-                nodeMapOut.writeObject(nodeMap);
-                nodeMapOut.close();
-                fileOut.close();
-                System.out.println("Node map saved.");
-            }
-            catch(IOException e){
-                e.printStackTrace();
-            }
-    }
+    
     
     public void printLastValues(){
         System.out.println(stringLastValues());

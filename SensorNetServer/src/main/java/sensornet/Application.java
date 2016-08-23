@@ -69,7 +69,7 @@ public class Application {
     /**
      * @return the nodeMap
      */
-    public static NodeMap getNodeMap()
+    public synchronized static NodeMap getNodeMap()
     {
         return nodeMap;
     }

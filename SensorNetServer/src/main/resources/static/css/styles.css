@@ -1,0 +1,32 @@
+body{
+}
+table{
+    width: 80%;
+}
+th{
+    background-color: #0099ff;
+    padding: 2%;
+    color: #ffffff;
+    border-radius: 15px;
+}
+td{
+    text-align: center;
+    background-color: #ccccff;
+    border-radius: 15px;
+}
+
+td a{
+    display: inline-block;
+    height: 100%;
+    width: 100%;
+    text-align: center;
+    
+    text-decoration: none;
+    background-color: #0099ff;
+    color: #ffffff;
+    border-radius: 15px;
+}
+
+td a:hover, td a:active{
+    background-color: #3300cc;
+}

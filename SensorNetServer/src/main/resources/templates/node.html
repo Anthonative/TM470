@@ -8,6 +8,7 @@ and open the template in the editor.
     <head>
         <title>Node</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <link href="../static/css/styles.css" th:href="@{css/styles.css}" rel="stylesheet"/>
     </head>
     <body>
       <table>
@@ -15,6 +16,7 @@ and open the template in the editor.
             <th th:text="${node.getName()}" colspan="2">SensorName</th>
         </tr>
         <tr>
+            <td><a href="/">Home</a></td>
             <td><a th:href="@{/nodesettings(nodeID=${node.getNodeID()})}">Settings</a></td>
         </tr>
       </table>
