@@ -46,7 +46,7 @@ void InstructionManager::addInstruction(string nodeID, Instruction* instruction)
     instructionMap.at(nodeID).push(instruction);
 }
 
-std::queue<Instruction*>* InstructionManager::getInstructions(string nodeID){
+ std::queue<Instruction*>* InstructionManager::getInstructions(string nodeID){
     printf("get instructions\n");
     return &instructionMap.at(nodeID);
 }
