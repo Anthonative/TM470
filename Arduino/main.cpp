@@ -20,7 +20,7 @@ extern HardwareSerial Serial;
 RF24 radio(7, 8);
 RF24Network network(radio);
 RF24Mesh mesh(radio, network);
-#define NODE_ID 5
+#define NODE_ID 15
 
 //DHT
 DHT dht(5, DHT22);
@@ -30,9 +30,9 @@ Timer timer;
 void send();
 void receive();
 void sendValueString(String);
-void setUpdatePeriod(int);
+void setUpdatePeriod(long);
 //Attributes
-int updatePeriod = 5000;
+long updatePeriod = 5000;
 int updateEvent;
         
 struct payload_t {
@@ -130,7 +130,8 @@ void receive(){
         if(network.available()){
             RF24NetworkHeader header;
             network.peek(header);
-            int8_t len = radio.getDynamicPayloadSize();
+            int len = radio.getDynamicPayloadSize();
+            Serial.println(len,DEC);
             switch(header.type){
              case 'I':{ 
                         network.read(header,0,0);
@@ -140,9 +141,12 @@ void receive(){
              case 'U':{
                         char value[len];
                         network.read(header,&value,sizeof(value));
-                        String inString(value);
-                        Serial.println("Received: " + inString);
-                        int period = inString.toInt();
+                        Serial.println(value);
+                        String valueString = String(value);
+                        Serial.println(value);
+                        valueString.trim();
+                        Serial.println(valueString.length());
+                        long period = valueString.toInt();
                         Serial.println(period);
                         setUpdatePeriod(period);
                         Serial.println("Update frequency changed to " + period);
@@ -158,7 +162,7 @@ void receive(){
     if(!received) Serial.println("No instructions received");
     radio.powerDown();
 }
-void setUpdatePeriod(int a){
+void setUpdatePeriod(long a){
     updatePeriod = a;
     timer.stop(updateEvent);
     updateEvent = timer.every(updatePeriod, send);
