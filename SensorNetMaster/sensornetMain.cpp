@@ -54,7 +54,7 @@ while(1)
     int16_t nodeID = mesh.getNodeID(header.from_node);
     char type = header.type;
     int8_t len = radio.getDynamicPayloadSize();
-    
+    printf("Message received, length: %i\n",len);
     switch(type){
       //Value
       case 'V': {
@@ -109,24 +109,32 @@ bool sendNodeInstructions(int16_t nodeID){
     }
     std::queue<Instruction*>* instructions = instructionManager.getInstructions(ss.str());
     printf("got instructions, size:%i\n",instructions->size());
-    
-    printf("%s\n",instructions->front()->GetData().c_str());
-    int i = 100;
-    while(!instructions->empty() && i > 0){
+    int a = 10;
+    while(!instructions->empty() && a>0){
         Instruction* instruction = instructions->front();
         printf("type:%s",instruction->GetType().c_str());
         printf("data:%s",instruction->GetData().c_str());
         char type = instruction->GetType().c_str()[0];
         string data = instruction->GetData();
-        printf("Attempting to send instruction%c;%s\n",type,data.c_str());
-            if(mesh.write(data.c_str(),type,sizeof(data.c_str()),nodeID)){
-              instructions->pop();
-              sent = 1;
-              i=0;
-              printf("Sent instruction %i;%s\n", nodeID,data.c_str());
-            }
-        i--;
-        delay(2);
+        char dataChar[data.length()+1];
+        strncpy(dataChar,data.c_str(), data.length()+1);
+        printf("data length: %i\n",data.length());
+        dataChar[data.length()] = '\0';
+        int i = 100;
+        while(i > 0){
+            printf("Attempting to send instruction%c;%s Length:%i\n",type,dataChar,sizeof(dataChar));
+                if(mesh.write(dataChar,type,sizeof(dataChar),nodeID)){
+                instructions->pop();
+                sent = 1;
+                i=0;
+                printf("Sent instruction %i;%s\n", nodeID,data.c_str());
+                }
+            i--;
+            mesh.update();
+            mesh.DHCP();
+            delay(2);
+        }
+        a--;
     }
     return sent;
 }      
