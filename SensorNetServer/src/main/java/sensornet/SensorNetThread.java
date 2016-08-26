@@ -48,6 +48,7 @@ public class SensorNetThread implements Runnable{
         BufferedReader in;
         BufferedOutputStream out;
         try{
+            System.out.println("Starting sensornet");
             System.out.println("Opening inFIFO");
             in = new BufferedReader(new FileReader(INFIFO_PATH));
             System.out.println("Open");

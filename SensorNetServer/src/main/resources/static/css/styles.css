@@ -1,11 +1,11 @@
 body{
 }
 table{
-    width: 80%;
+    width: 90%;
 }
 th{
     background-color: #0099ff;
-    padding: 2%;
+    padding: 5px;
     color: #ffffff;
     border-radius: 15px;
 }

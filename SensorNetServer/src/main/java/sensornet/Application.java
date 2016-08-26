@@ -24,6 +24,12 @@ public class Application {
 
     
     public static void main(String[] args) {
+      /*  try{
+            Runtime.getRuntime().exec("/root/SensorNetServer/sensornetmaster");
+        }
+        catch(IOException e){
+            e.printStackTrace();
+        }*/
         SpringApplication.run(Application.class, args);
         nodeMap = initNodeMap();
         sensorNetThread  = new SensorNetThread(getNodeMap());
