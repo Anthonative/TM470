@@ -34,11 +34,11 @@ public class SensorNetThread implements Runnable{
     public SensorNetThread(NodeMap nodeMap){
         this.nodeMap = nodeMap;
         //test    
-            nodeMap.removeNode(100);
+        /*    nodeMap.removeNode(100);
             nodeMap.addNode(100);
             for(int i=0; i<10000; i++){
                 nodeMap.getNode(100).addValue(LocalDateTime.now().plusMinutes(i), "Test", i);
-            }
+            }*/
         
         nodeMap.save();
     }

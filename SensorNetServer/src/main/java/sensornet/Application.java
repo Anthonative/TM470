@@ -24,7 +24,7 @@ public class Application {
 
     
     public static void main(String[] args) {
-      /*  try{
+        /*try{
             Runtime.getRuntime().exec("/root/SensorNetServer/sensornetmaster");
         }
         catch(IOException e){
