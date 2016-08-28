@@ -47,14 +47,11 @@ void InstructionManager::addInstruction(string nodeID, Instruction* instruction)
 }
 
  std::queue<Instruction*>* InstructionManager::getInstructions(string nodeID){
-    printf("get instructions\n");
     return &instructionMap.at(nodeID);
 }
 
 bool InstructionManager::hasInstructions(string nodeID){
-    printf("has instructions?\n");
     if(instructionMap.count(nodeID) < 1) return false;
-    printf("size=%i\n",instructionMap[nodeID].size());
     return(instructionMap[nodeID].size() > 0);
 }
 
@@ -64,7 +61,6 @@ void InstructionManager::readInstructions(){
     while(std::getline(inStream,instruction)){
         //printf("instructionloop\n");
         if(instruction == "END")break;
-        printf("Instruction: %s\n", instruction.c_str());
         parseInstructionString(instruction);
     }
     inStream.close();
@@ -72,7 +68,6 @@ void InstructionManager::readInstructions(){
 }
 
 void InstructionManager::parseInstructionString(std::string instructionString){
-    printf("parsing...\n");
     stringstream ss(instructionString);
     string token;
     vector<string> tokens;
@@ -86,10 +81,7 @@ void InstructionManager::parseInstructionString(std::string instructionString){
         string type = tokens.at(1);
         string data = tokens.at(2);
         Instruction *instruction = new Instruction(type, data);
-        printf("%s\n", instruction->GetData().c_str());
         addInstruction(nodeID,instruction);
-        printf("added instruction\n");
-        printf("%s\n",getInstructions(nodeID)->front()->GetData().c_str());
     }
             
 }
