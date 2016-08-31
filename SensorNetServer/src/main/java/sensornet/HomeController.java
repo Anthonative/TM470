@@ -55,10 +55,7 @@ public class HomeController {
         @RequestMapping("/nodesettings")
         public String nodeSettings(@RequestParam(value="nodeID", required=true) int nodeID, Model model){
             Node node = Application.getNodeMap().getNode(nodeID);
-            NodeBean nodeBean = new NodeBean();
-            nodeBean.setNodeID(nodeID);
-            nodeBean.setName(node.getName());
-            model.addAttribute("node", nodeBean);
+            model.addAttribute("node", node);
             return "nodesettings"; 
         }
         
