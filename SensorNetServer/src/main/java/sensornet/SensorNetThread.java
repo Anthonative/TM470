@@ -87,7 +87,6 @@ public class SensorNetThread implements Runnable{
               nodeMap.getNode(nodeID).addValue(LocalDateTime.now(), type, value);
               System.out.println("New value recieved.");
               System.out.println(LocalDateTime.now());
-             // printLastValues();
          }
     }
     
