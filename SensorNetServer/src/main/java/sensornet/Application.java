@@ -17,7 +17,7 @@ public class Application {
     private static volatile NodeMap nodeMap;
     private static SensorNetThread sensorNetThread;
     
-     @Bean
+    @Bean
     public Java8TimeDialect java8TimeDialect() {
         return new Java8TimeDialect();
     }        
@@ -79,12 +79,6 @@ public class Application {
     {
         return nodeMap;
     }
-
-    /**
-     * @return the nodeMap
-     */
-    
-   
   
    
 }
