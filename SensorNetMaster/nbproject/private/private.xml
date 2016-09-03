@@ -9,6 +9,7 @@
         <group>
             <file>file:/D:/TM470/TM470/SensorNetMaster/sensornetMain.cpp</file>
             <file>file:/D:/TM470/TM470/SensorNetMaster/InstructionManager.h</file>
+            <file>file:/D:/TM470/TM470/SensorNetMaster/LocalOut.cpp</file>
             <file>file:/D:/TM470/TM470/SensorNetMaster/InstructionManager.cpp</file>
         </group>
     </open-files>
