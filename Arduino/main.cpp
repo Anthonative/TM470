@@ -20,7 +20,7 @@ extern HardwareSerial Serial;
 RF24 radio(7, 8);
 RF24Network network(radio);
 RF24Mesh mesh(radio, network);
-#define NODE_ID 5
+#define NODE_ID 25
 
 //DHT
 DHT dht(5, DHT22);
