@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
  
 @Controller
-public class HomeController {
+public class SensorNetController {
 	
 	@RequestMapping("/")
 	public String index() {
